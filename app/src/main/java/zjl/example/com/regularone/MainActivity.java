@@ -16,16 +16,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.jaydenxiao.common.base.BaseActivity;
+
 import util.UpdateAppUtils;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void initPresenter() {
+
+    }
+
+    @Override
+    public void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,6 +57,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+//        dialogTest();
+//        appDateTest();
+    }
+
+    private void appDateTest() {
         UpdateAppUtils.from(this)
                 .checkBy(UpdateAppUtils.CHECK_BY_VERSION_NAME) //更新检测方式，默认为VersionCode
                 .serverVersionCode(2)
@@ -57,8 +73,6 @@ public class MainActivity extends AppCompatActivity
                 .downloadBy(UpdateAppUtils.DOWNLOAD_BY_APP) //下载方式：app下载、手机浏览器下载。默认app下载
                 .isForce(false) //是否强制更新，默认false 强制更新情况下用户不同意更新则不能使用app
                 .update();
-
-//        dialogTest();
     }
 
     Dialog mLoadingDialog;
