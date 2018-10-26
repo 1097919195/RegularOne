@@ -1,6 +1,7 @@
-package zjl.example.com.regularone;
+package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.jaydenxiao.common.base.BaseActivity;
 
 import util.UpdateAppUtils;
+import zjl.example.com.regularone.R;
 
 
 public class MainActivity extends BaseActivity
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity
     public void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("首页");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +63,14 @@ public class MainActivity extends BaseActivity
 
 
 //        dialogTest();
+        dialogTest2();
 //        appDateTest();
+    }
+
+    private void dialogTest2() {
+        ImageView imageView = (ImageView) findViewById(R.id.ivLoadView);
+        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
     }
 
     private void appDateTest() {
@@ -77,10 +88,10 @@ public class MainActivity extends BaseActivity
 
     Dialog mLoadingDialog;
     private void dialogTest() {
-//        View view = LayoutInflater.from(this).inflate(com.jaydenxiao.common.R.layout.dialog_loading, null);
-//        mLoadingDialog = new Dialog(this,R.style.CustomProgressDialog);
-//        mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-//        mLoadingDialog.show();
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
+        mLoadingDialog = new Dialog(this,R.style.CustomProgressDialog);
+        mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        mLoadingDialog.show();
     }
 
     @Override
