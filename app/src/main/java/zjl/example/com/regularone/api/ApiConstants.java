@@ -22,6 +22,12 @@ public class ApiConstants {
     public static final String QUALITY_HOST = "https://n.npclo.com/";
 
     /**
+     * 新浪图片新闻
+     * http://gank.io/api/data/福利/{size}/{page}
+     */
+    public static final String PHOTO_HOST = "http://gank.io/api/";
+
+    /**
      * 获取对应的host
      *
      * @param hostType host类型
@@ -35,6 +41,9 @@ public class ApiConstants {
                 break;
             case HostType.QUALITY_DATA:
                 host = QUALITY_HOST;
+                break;
+            case HostType.PHOTO_HOST:
+                host = PHOTO_HOST;
                 break;
             default:
                 host = "";

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.commonutils.ToastUtil;
 
 import java.lang.reflect.Field;
 
@@ -145,6 +146,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            ToastUtil.showShort("扫描二维码");
             return true;
         }
 
