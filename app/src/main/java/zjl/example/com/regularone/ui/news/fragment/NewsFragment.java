@@ -1,17 +1,41 @@
 package zjl.example.com.regularone.ui.news.fragment;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jaydenxiao.common.base.BaseFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.github.library.BaseRecyclerAdapter;
+import com.github.library.view.LoadType;
+import com.jaydenxiao.common.base.BaseFragment;
+import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.bean.PhotoGirl;
+import zjl.example.com.regularone.ui.news.contract.PhotosListContract;
+import zjl.example.com.regularone.ui.news.model.PhotosListModel;
+import zjl.example.com.regularone.ui.news.presenter.PhotosListPresenter;
 
 /**
  * Created by Administrator on 2018/10/27 0027.
  */
 
-public class NewsFragment extends BaseFragment{
+public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListModel> implements PhotosListContract.View {
 
-    BaseQuickAdapter adapter;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.srfLayout)
+    SwipeRefreshLayout srfLayout;
+    private static int SIZE = 20;
+    private int mStartPage = 0;
+    List<PhotoGirl> photoGirlList = new ArrayList<>();
+    BaseRecyclerAdapter<PhotoGirl> adapter;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_news_list;
@@ -19,12 +43,72 @@ public class NewsFragment extends BaseFragment{
 
     @Override
     public void initPresenter() {
-
+        mPresenter.setVM(this, mModel);
     }
 
     @Override
     protected void initView() {
+        mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+        initAdapter();
+        initSwipRefresh();
+    }
 
+    private void initSwipRefresh() {
+        srfLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
+        srfLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mStartPage = 0;
+                mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+            }
+        });
+    }
 
+    private void initAdapter() {
+        adapter = new BaseRecyclerAdapter<PhotoGirl>(getActivity(), photoGirlList, R.layout.item_news_main) {
+            @Override
+            protected void convert(com.github.library.BaseViewHolder helper, PhotoGirl item) {
+                ImageView image = helper.getView(R.id.ivGirlImage);
+                helper.setText(R.id.tvImageTitle, item.getDesc());
+//                Glide.with(getActivity())
+//                     .load(item.getUrl())
+//                     .into(image);
+                ImageLoaderUtils.displayBigPhoto(getActivity(), image, item.getUrl());
+            }
+        };
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+    }
+
+    @Override
+    public void returnPhotosListData(List<PhotoGirl> photoGirls) {
+        srfLayout.setRefreshing(false);
+        if (photoGirls != null) {
+            photoGirlList = photoGirls;
+            mStartPage += 1;
+
+            //好像会缓存的
+            if (adapter.getData().size() > 0) {
+                adapter.getData().clear();
+            }
+            adapter.getData().addAll(photoGirls);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showLoading(String title) {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void showErrorTip(String msg) {
+        srfLayout.setRefreshing(false);
     }
 }

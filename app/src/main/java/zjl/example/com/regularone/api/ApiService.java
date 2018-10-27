@@ -1,6 +1,12 @@
 package zjl.example.com.regularone.api;
 
 
+import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
+import zjl.example.com.regularone.bean.GirlData;
+
 /**
  * des:ApiService
  * Created by xsf
@@ -45,11 +51,11 @@ public interface ApiService {
 //    // baseUrl 需要符合标准，为空、""、或不合法将会报错
 //
 //
-//    @GET("data/福利/{size}/{page}")
-//    Observable<GirlData> getPhotoList(
-//            @Header("Cache-Control") String cacheControl,
-//            @Path("size") int size,
-//            @Path("page") int page);
+    @GET("data/福利/{size}/{page}")
+    Observable<GirlData> getPhotoList(
+            @Header("Cache-Control") String cacheControl,
+            @Path("size") int size,
+            @Path("page") int page);
 //
 //    //视频
 //    @GET("nc/video/list/{type}/n/{startPage}-10.html")
