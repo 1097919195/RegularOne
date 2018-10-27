@@ -1,6 +1,7 @@
 package zjl.example.com.regularone.ui.news.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     List<PhotoGirl> photoGirlList = new ArrayList<>();
     BaseRecyclerAdapter<PhotoGirl> adapter;
 
+    private RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_news_list;
@@ -54,6 +57,7 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     }
 
     private void initSwipRefresh() {
+        layoutManager = new LinearLayoutManager(getActivity());
         srfLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
         srfLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -79,6 +83,8 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 //        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+        recyclerView.addOnScrollListener(mScrollListener);
     }
 
     @Override
@@ -88,10 +94,10 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
             photoGirlList = photoGirls;
             mStartPage += 1;
 
-            //好像会缓存的
-            if (adapter.getData().size() > 0) {
-                adapter.getData().clear();
-            }
+//            //好像会缓存的
+//            if (adapter.getData().size() > 0) {
+//                adapter.getData().clear();
+//            }
             adapter.getData().addAll(photoGirls);
             adapter.notifyDataSetChanged();
         }
@@ -111,4 +117,30 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     public void showErrorTip(String msg) {
         srfLayout.setRefreshing(false);
     }
+
+
+    //RecyclerView向下滑动事件
+    private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+        int lastVisibleItem;
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == layoutManager.getItemCount()) {
+                mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            lastVisibleItem = findLastVisibleItemPosition();
+        }
+    };
+
+    //查询最后一个可见Item的下标
+    public int findLastVisibleItemPosition() {
+        int lastVisibleItemPosition = 0;
+        lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+        return lastVisibleItemPosition;
+    }
+
 }
