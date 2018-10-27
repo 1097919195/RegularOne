@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="drawer_menu_read">分类</string>
+    <string name="drawer_menu_options">选项</string>
+    <string name="drawer_menu_about">关于</string>
+    <string name="drawer_menu_area">地区分类</string>
+    <string name="drawer_menu_picture">图片分类</string>
+    <string name="drawer_menu_station">名站写真</string>
+    <string name="drawer_menu_diagrams">日本套图</string>
 </resources>

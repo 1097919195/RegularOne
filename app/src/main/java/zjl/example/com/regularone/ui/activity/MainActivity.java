@@ -2,10 +2,12 @@ package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,18 +17,23 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.jaydenxiao.common.base.BaseActivity;
 
+import java.lang.reflect.Field;
+
 import util.UpdateAppUtils;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    NewsMainFragment newsMainFragment;
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -39,6 +46,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initView() {
+        makeActionOverflowMenuShown();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("首页");
@@ -63,17 +71,34 @@ public class MainActivity extends BaseActivity
 
 
 //        dialogTest();
-        dialogTest2();
-//        appDateTest();
+        dialogLoadingTest();
+//        appDataTest();
+
+        //去掉AppBarLayout下面的阴影
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.action_bar).setOutlineProvider(null);
+            findViewById(R.id.toolbar).setOutlineProvider(ViewOutlineProvider.BOUNDS);
+        }
+
+        initFragment();
+        //设置菜单默认选中项
+        navigationView.setCheckedItem(R.id.nav_menu_news);
     }
 
-    private void dialogTest2() {
+    private void initFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        newsMainFragment = new NewsMainFragment();
+        transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
+        transaction.commit();
+    }
+
+    private void dialogLoadingTest() {
         ImageView imageView = (ImageView) findViewById(R.id.ivLoadView);
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
 
-    private void appDateTest() {
+    private void appDataTest() {
         UpdateAppUtils.from(this)
                 .checkBy(UpdateAppUtils.CHECK_BY_VERSION_NAME) //更新检测方式，默认为VersionCode
                 .serverVersionCode(2)
@@ -129,25 +154,39 @@ public class MainActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_menu_news) {
+            transaction.show(newsMainFragment);
+        } else if (id == R.id.nav_menu_picture) {
+            transaction.hide(newsMainFragment);
+        } else if (id == R.id.nav_menu_station) {
+            transaction.hide(newsMainFragment);
+        } else if (id == R.id.nav_menu_diagrams) {
+            transaction.hide(newsMainFragment);
+        } else if (id == R.id.nav_menu_about) {
+            transaction.hide(newsMainFragment);
         }
+
+        transaction.commitAllowingStateLoss();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void makeActionOverflowMenuShown() {
+        //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

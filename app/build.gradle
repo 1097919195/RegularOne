@@ -78,5 +78,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.qianwen:update-app:3.5.2'
     compile 'com.teprinciple:updateapputils:1.4'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    compile 'com.github.baserecycleradapter:library:1.1.0'
 
 }
