@@ -1,15 +1,18 @@
 package zjl.example.com.regularone.ui.news.fragment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.library.BaseRecyclerAdapter;
 import com.github.library.view.LoadType;
 import com.jaydenxiao.common.base.BaseFragment;
+import com.jaydenxiao.common.base.BaseFragmentLazy;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -30,7 +33,7 @@ import zjl.example.com.regularone.ui.news.presenter.PhotosListPresenter;
  * Created by Administrator on 2018/10/27 0027.
  */
 
-public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListModel> implements PhotosListContract.View {
+public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosListModel> implements PhotosListContract.View {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -42,6 +45,17 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     BaseRecyclerAdapter<PhotoGirl> adapter;
 
     private RecyclerView.LayoutManager layoutManager;
+
+    ImageView imageView;
+
+    @Override
+    protected void lazyLoadData() {
+        //加载初始化数据的时候，数据为空才重新发起请求(防止切回fragment调用该方法进行加载)
+        if (adapter.getData().size()<=0){
+            mStartPage = 0;
+            mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+        }
+    }
 
     @Override
     protected int getLayoutResource() {
@@ -55,9 +69,16 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
 
     @Override
     protected void initView() {
-        mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+//        mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
         initAdapter();
         initSwipRefresh();
+        preDialogLoading();
+    }
+
+    private void preDialogLoading() {
+        imageView = (ImageView) rootView.findViewById(R.id.ivLoadView);
+        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
     }
 
     private void initSwipRefresh() {
@@ -117,6 +138,7 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     @Override
     public void returnPhotosListData(List<PhotoGirl> photoGirls) {
 //        srfLayout.setRefreshing(false);
+        imageView.setVisibility(View.INVISIBLE);
         srfLayout.finishRefreshing();
         srfLayout.finishLoadmore();
         if (photoGirls != null) {
