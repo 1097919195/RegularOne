@@ -14,6 +14,7 @@ import com.github.library.view.LoadType;
 import com.jaydenxiao.common.base.BaseFragment;
 import com.jaydenxiao.common.base.BaseFragmentLazy;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.LoadingView;
@@ -44,7 +45,7 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     List<PhotoGirl> photoGirlList = new ArrayList<>();
     BaseRecyclerAdapter<PhotoGirl> adapter;
 
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
 
     ImageView imageView;
 
@@ -82,7 +83,6 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     }
 
     private void initSwipRefresh() {
-        layoutManager = new LinearLayoutManager(getActivity());
 //        srfLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
 //        srfLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 //            @Override
@@ -121,10 +121,14 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
             }
         };
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 //        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
+        //检测最后一项加载更多
 //        recyclerView.addOnScrollListener(mScrollListener);
+
         //修改刷新类型View
         ProgressLayout headerView = new ProgressLayout(getActivity());
         headerView.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
@@ -167,7 +171,8 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     }
 
 
-    //RecyclerView向下滑动事件
+    //RecyclerView向下滑动事件 https://blog.csdn.net/afanyusong/article/details/51296290
+    //(这里是简单的根据linearManager来判断的，其他的布局参考：https://blog.csdn.net/qq402164452/article/details/69374944)
     private RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
         int lastVisibleItem;
 
@@ -180,7 +185,8 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            lastVisibleItem = findLastVisibleItemPosition();
+//            lastVisibleItem = findLastVisibleItemPosition();
+            lastVisibleItem = layoutManager.findLastVisibleItemPosition();
         }
     };
 
