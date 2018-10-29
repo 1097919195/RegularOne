@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="检测滑动"
-        android:gravity="center"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="pager滑动标记"-->
+        <!--android:gravity="center"/>-->
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/srfLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,7 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_news_main"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/srfLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--tools:listitem="@layout/item_news_main"/>-->
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 
 </FrameLayout>

@@ -11,6 +11,10 @@ import com.github.library.BaseRecyclerAdapter;
 import com.github.library.view.LoadType;
 import com.jaydenxiao.common.base.BaseFragment;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.footer.LoadingView;
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +35,8 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.srfLayout)
-    SwipeRefreshLayout srfLayout;
-    private static int SIZE = 20;
+    TwinklingRefreshLayout srfLayout;
+    private static int SIZE = 10;
     private int mStartPage = 0;
     List<PhotoGirl> photoGirlList = new ArrayList<>();
     BaseRecyclerAdapter<PhotoGirl> adapter;
@@ -58,11 +62,26 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
 
     private void initSwipRefresh() {
         layoutManager = new LinearLayoutManager(getActivity());
-        srfLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
-        srfLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        srfLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
+//        srfLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                mStartPage = 0;
+//                mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+//            }
+//        });
+
+        srfLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                super.onRefresh(refreshLayout);
                 mStartPage = 0;
+                mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
                 mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
             }
         });
@@ -84,20 +103,25 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 //        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        recyclerView.addOnScrollListener(mScrollListener);
+//        recyclerView.addOnScrollListener(mScrollListener);
+        //修改刷新类型View
+        ProgressLayout headerView = new ProgressLayout(getActivity());
+        headerView.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
+        srfLayout.setHeaderView(headerView);
+        //修改加载类型View
+        LoadingView loadingView = new LoadingView(getActivity());
+//        loadingView.setColorFilter(R.color.colorPrimaryDark);
+        srfLayout.setBottomView(loadingView);
     }
 
     @Override
     public void returnPhotosListData(List<PhotoGirl> photoGirls) {
-        srfLayout.setRefreshing(false);
+//        srfLayout.setRefreshing(false);
+        srfLayout.finishRefreshing();
+        srfLayout.finishLoadmore();
         if (photoGirls != null) {
-            photoGirlList = photoGirls;
             mStartPage += 1;
 
-//            //好像会缓存的
-//            if (adapter.getData().size() > 0) {
-//                adapter.getData().clear();
-//            }
             adapter.getData().addAll(photoGirls);
             adapter.notifyDataSetChanged();
         }
@@ -115,7 +139,9 @@ public class NewsFragment extends BaseFragment<PhotosListPresenter, PhotosListMo
 
     @Override
     public void showErrorTip(String msg) {
-        srfLayout.setRefreshing(false);
+//        srfLayout.setRefreshing(false);
+        srfLayout.finishRefreshing();
+        srfLayout.finishLoadmore();
     }
 
 

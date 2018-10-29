@@ -80,5 +80,6 @@ dependencies {
     compile 'com.teprinciple:updateapputils:1.4'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.github.baserecycleradapter:library:1.1.0'
+    compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
 
 }
