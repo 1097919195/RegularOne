@@ -3,6 +3,7 @@ package zjl.example.com.regularone.app;
 import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.polidea.rxandroidble2.RxBleClient;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import zjl.example.com.regularone.BuildConfig;
@@ -17,6 +18,8 @@ public class AppApplication extends BaseApplication{
         super.onCreate();
         LogUtils.logInit(BuildConfig.LOG_DEBUG);
         setRxJavaErrorHandler();
+
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     /**

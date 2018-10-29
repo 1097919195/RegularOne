@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.bean.PhotoGirl;
+import zjl.example.com.regularone.ui.news.activity.PhotosDetailActivity;
 import zjl.example.com.regularone.ui.news.contract.PhotosListContract;
 import zjl.example.com.regularone.ui.news.model.PhotosListModel;
 import zjl.example.com.regularone.ui.news.presenter.PhotosListPresenter;
@@ -40,6 +41,8 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     RecyclerView recyclerView;
     @BindView(R.id.srfLayout)
     TwinklingRefreshLayout srfLayout;
+//    @BindView(R.id.srfLayout)
+//    SwipeRefreshLayout srfLayout;
     private static int SIZE = 10;
     private int mStartPage = 0;
     List<PhotoGirl> photoGirlList = new ArrayList<>();
@@ -118,6 +121,12 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
 //                     .load(item.getUrl())
 //                     .into(image);
                 ImageLoaderUtils.displayBigPhoto(getActivity(), image, item.getUrl());
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PhotosDetailActivity.startAction(getActivity(),item.getUrl());
+                    }
+                });
             }
         };
         recyclerView.setAdapter(adapter);
@@ -151,6 +160,11 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
             adapter.getData().addAll(photoGirls);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void scrolltoTop() {
+        recyclerView.smoothScrollToPosition(0);
     }
 
     @Override
