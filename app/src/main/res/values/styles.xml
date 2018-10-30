@@ -35,4 +35,15 @@
         <!--<item name="android:colorBackgroundCacheHint">@null</item>&lt;!&ndash; 背景缓存颜色 &ndash;&gt;-->
     <!--</style>-->
 
+    <style name="AppWelcome" parent="android:Theme.Translucent.NoTitleBar.Fullscreen"/>
+    <style name="AppWelcome.wallpaper" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/bg_about</item>
+    </style>
+
+    <style name="AppTheme.Trans">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

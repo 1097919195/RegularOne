@@ -82,5 +82,6 @@ dependencies {
     compile 'com.github.baserecycleradapter:library:1.1.0'
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
+    implementation 'com.liulishuo.filedownloader:library:1.7.4'
 
 }

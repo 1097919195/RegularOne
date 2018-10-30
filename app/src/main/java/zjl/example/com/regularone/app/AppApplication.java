@@ -2,6 +2,7 @@ package zjl.example.com.regularone.app;
 
 import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
+import com.liulishuo.filedownloader.FileDownloader;
 import com.polidea.rxandroidble2.RxBleClient;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
@@ -20,6 +21,7 @@ public class AppApplication extends BaseApplication{
         setRxJavaErrorHandler();
 
         ZXingLibrary.initDisplayOpinion(this);
+        FileDownloader.setup(this);//注意作者已经不建议使用init方法
     }
 
     /**
