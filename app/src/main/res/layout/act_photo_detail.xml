@@ -35,6 +35,7 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="图片详情"
-        tools:alpha="1.0" />
+        tools:alpha="1.0"
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>
 </RelativeLayout>
 
