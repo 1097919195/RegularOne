@@ -38,6 +38,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private static final int REQUEST_CODE = 1000;
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
@@ -56,7 +58,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
         toolbar.setTitle("首页");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,31 +195,37 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
         switch (id) {
             case  R.id.nav_menu_news:
+                fab.show();
                 toolbar.setTitle("设置");
                 transaction.show(newsMainFragment);
                 transaction.hide(aboutFragment);
                 break;
             case  R.id.nav_menu_picture:
+                fab.hide();
                 toolbar.setTitle("搜索");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 break;
             case R.id.nav_menu_station:
+                fab.hide();
                 toolbar.setTitle("地区");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 break;
             case R.id.nav_menu_favorite:
+                fab.hide();
                 toolbar.setTitle("收藏");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 break;
             case R.id.nav_menu_setting:
+                fab.hide();
                 toolbar.setTitle("设置");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 break;
             case R.id.nav_menu_about:
+                fab.hide();
                 toolbar.setTitle("关于");
                 transaction.show(aboutFragment);
                 transaction.hide(newsMainFragment);

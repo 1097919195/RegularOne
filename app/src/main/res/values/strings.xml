@@ -15,4 +15,8 @@
     <string name="drawer_menu_station">B站搜索</string>
     <string name="drawer_menu_favorite">收藏内容</string>
 
+
+    <string name="share">分享</string>
+    <string name="share_contents">来自妹子的分享：%1$s %2$s</string>
+
 </resources>
