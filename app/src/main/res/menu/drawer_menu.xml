@@ -22,7 +22,7 @@
                 android:icon="@drawable/draw_area"
                 android:title="@string/drawer_menu_area"/>
             <item
-                android:id="@+id/nav_menu_diagrams"
+                android:id="@+id/nav_menu_favorite"
                 android:checkable="true"
                 android:icon="@drawable/draw_diagrams"
                 android:title="@string/drawer_menu_favorite"/>

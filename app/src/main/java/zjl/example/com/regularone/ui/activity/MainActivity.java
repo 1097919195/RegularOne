@@ -26,6 +26,7 @@ import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import butterknife.BindView;
 import util.UpdateAppUtils;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppConstant;
@@ -35,12 +36,14 @@ import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private static final int REQUEST_CODE = 1000;
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
     @Override
     public int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.act_main;
     }
 
     @Override
@@ -50,7 +53,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("首页");
 
@@ -75,7 +77,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 
 //        dialogTest();
-        dialogLoadingTest();
+        loadingViewTest();
 //        appDataTest();
 
         //去掉AppBarLayout下面的阴影
@@ -99,7 +101,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         transaction.commit();
     }
 
-    private void dialogLoadingTest() {
+    private void loadingViewTest() {
         ImageView imageView = (ImageView) findViewById(R.id.ivLoadView);
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
@@ -120,7 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     Dialog mLoadingDialog;
     private void dialogTest() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);
         mLoadingDialog = new Dialog(this,R.style.CustomProgressDialog);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mLoadingDialog.show();
@@ -190,27 +192,40 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
-
-        if (id == R.id.nav_menu_news) {
-            transaction.show(newsMainFragment);
-            transaction.hide(aboutFragment);
-        } else if (id == R.id.nav_menu_picture) {
-            transaction.hide(newsMainFragment);
-            transaction.hide(aboutFragment);
-        } else if (id == R.id.nav_menu_station) {
-            transaction.hide(newsMainFragment);
-            transaction.hide(aboutFragment);
-        } else if (id == R.id.nav_menu_diagrams) {
-            transaction.hide(newsMainFragment);
-            transaction.hide(aboutFragment);
-        }else if (id == R.id.nav_menu_setting) {
-            transaction.hide(newsMainFragment);
-            transaction.hide(aboutFragment);
-        } else if (id == R.id.nav_menu_about) {
-            transaction.show(aboutFragment);
-            transaction.hide(newsMainFragment);
+        switch (id) {
+            case  R.id.nav_menu_news:
+                toolbar.setTitle("设置");
+                transaction.show(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case  R.id.nav_menu_picture:
+                toolbar.setTitle("搜索");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_station:
+                toolbar.setTitle("地区");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_favorite:
+                toolbar.setTitle("收藏");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_setting:
+                toolbar.setTitle("设置");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_about:
+                toolbar.setTitle("关于");
+                transaction.show(aboutFragment);
+                transaction.hide(newsMainFragment);
+                break;
+            default:
+                break;
         }
-
         transaction.commitAllowingStateLoss();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

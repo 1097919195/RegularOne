@@ -1,20 +1,14 @@
 package zjl.example.com.regularone.ui.news.fragment;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.github.library.BaseRecyclerAdapter;
-import com.github.library.view.LoadType;
-import com.jaydenxiao.common.base.BaseFragment;
 import com.jaydenxiao.common.base.BaseFragmentLazy;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
-import com.jaydenxiao.common.commonutils.LogUtils;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.LoadingView;
@@ -63,7 +57,7 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_news_list;
+        return R.layout.frag_news_list;
     }
 
     @Override
