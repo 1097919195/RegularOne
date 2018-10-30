@@ -36,9 +36,9 @@
     <!--</style>-->
 
     <style name="AppWelcome" parent="android:Theme.Translucent.NoTitleBar.Fullscreen"/>
-    <style name="AppWelcome.wallpaper" parent="AppTheme">
+    <style name="AppTheme.wallpaper" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@drawable/bg_about</item>
+        <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 
     <style name="AppTheme.Trans">

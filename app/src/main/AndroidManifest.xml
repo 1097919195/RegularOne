@@ -33,7 +33,7 @@
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="nosensor"
             android:label="@string/app_name"
-            android:theme="@style/AppWelcome.wallpaper"
+            android:theme="@style/AppTheme.wallpaper"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,8 +44,10 @@
 
         <!--注意需要添加them才能使pull拉动的手背景色改变-->
         <activity android:name=".ui.news.activity.PhotosDetailActivity"
-            android:theme="@style/AppTheme.Trans"/>
-        <activity android:name=".ui.activity.AccountActivity" />
+            android:theme="@style/AppTheme.Trans"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".ui.activity.AccountActivity"
+            android:screenOrientation="nosensor"/>
     </application>
 
 </manifest>

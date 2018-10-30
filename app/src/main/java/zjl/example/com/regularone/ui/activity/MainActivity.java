@@ -29,6 +29,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import util.UpdateAppUtils;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppConstant;
+import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 
 
@@ -36,6 +37,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private static final int REQUEST_CODE = 1000;
     NewsMainFragment newsMainFragment;
+    AboutFragment aboutFragment;
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -90,7 +92,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void initFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         newsMainFragment = new NewsMainFragment();
+        aboutFragment = new AboutFragment();
         transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
+        transaction.add(R.id.rl_body, aboutFragment, "aboutFragment");
+        transaction.hide(aboutFragment);
         transaction.commit();
     }
 
@@ -188,13 +193,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         if (id == R.id.nav_menu_news) {
             transaction.show(newsMainFragment);
+            transaction.hide(aboutFragment);
         } else if (id == R.id.nav_menu_picture) {
             transaction.hide(newsMainFragment);
+            transaction.hide(aboutFragment);
         } else if (id == R.id.nav_menu_station) {
             transaction.hide(newsMainFragment);
+            transaction.hide(aboutFragment);
         } else if (id == R.id.nav_menu_diagrams) {
             transaction.hide(newsMainFragment);
+            transaction.hide(aboutFragment);
+        }else if (id == R.id.nav_menu_setting) {
+            transaction.hide(newsMainFragment);
+            transaction.hide(aboutFragment);
         } else if (id == R.id.nav_menu_about) {
+            transaction.show(aboutFragment);
             transaction.hide(newsMainFragment);
         }
 
