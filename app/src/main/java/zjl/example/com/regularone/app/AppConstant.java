@@ -39,5 +39,6 @@ public class AppConstant {
 
     public static final String NEWS_LIST_TO_TOP = "NEWS_LIST_TO_TOP";
     public static final String PHOTO_DETAIL = "PHOTO_DETAIL";
+    public static final String STORE_PERSON_PHOTO = "touxiang";
 
 }

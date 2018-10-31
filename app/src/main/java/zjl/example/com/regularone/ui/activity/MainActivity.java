@@ -2,9 +2,11 @@ package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,17 +24,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.commonutils.ACache;
+import com.jaydenxiao.common.commonutils.CollectionUtils;
+import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.io.File;
+import java.util.List;
+
 import butterknife.BindView;
 import util.UpdateAppUtils;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
+import zjl.example.com.regularone.utils.FileUtils;
 
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,8 +54,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.fab)
     FloatingActionButton fab;
     private static final int REQUEST_CODE = 1000;
+    private static final int REQUEST_PHOTO = 1001;
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
+
+    ImageView photo;
+
     @Override
     public int getLayoutId() {
         return R.layout.act_main;
@@ -76,6 +93,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        photo = headerView.findViewById(R.id.photo);
+
 
 //        dialogTest();
         loadingViewTest();
@@ -90,6 +110,43 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initFragment();
         //设置菜单默认选中项
         navigationView.setCheckedItem(R.id.nav_menu_news);
+        initPersonPhoto();
+        initListener();
+    }
+
+    private void initPersonPhoto() {
+        //根据有无缓存 加载显示头像(如果是服务器则需要从服务器获取)
+        if (ACache.get(AppApplication.getAppContext()).getAsString(AppConstant.STORE_PERSON_PHOTO) == null) {
+            ImageLoaderUtils.displayRound(this, photo, R.drawable.bg_about_land);
+        } else {
+            ImageLoaderUtils.displayRound(this, photo, ACache.get(AppApplication.getAppContext()).getAsString(AppConstant.STORE_PERSON_PHOTO));
+        }
+    }
+
+    private void initListener() {
+        photo.setOnClickListener(v ->{
+            openPicture();
+        });
+    }
+
+    //开启图片库
+    public void openPicture() {
+        //Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); // "android.intent.action.GET_CONTENT"
+
+        //为了更好的适应版本,4.4前后获取的路径不同
+        Intent innerIntent = new Intent();
+        if (Build.VERSION.SDK_INT < 19) {
+            innerIntent.setAction(Intent.ACTION_GET_CONTENT);
+        } else {
+            //innerIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            innerIntent.setAction(Intent.ACTION_PICK);
+        }
+
+        innerIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        //弹出的对话框
+        Intent wrapperIntent = Intent.createChooser(innerIntent,
+                "选择二维码图片");
+        this.startActivityForResult(wrapperIntent, REQUEST_PHOTO);
     }
 
     private void initFragment() {
@@ -183,6 +240,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        /**
+         * 更换头像
+         */
+        if (requestCode == REQUEST_PHOTO) {
+            if (null != data) {
+                String photoPath = "";
+                // 获取选中图片的路径
+                Cursor cursor = getContentResolver().query(
+                        data.getData(), new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    photoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    Log.e("photoPath", photoPath);
+                }
+                cursor.close();
+
+                if (!"".equals(photoPath)) {
+                    //将截取到图片以圆形的方式显示到imglogo
+//                    Glide.with(this).load(photoPath).into(photo);
+                    ImageLoaderUtils.displayRound(this, photo, photoPath);
+                    //将截取的头像logo放到缓存中(如果是服务器则需上传到服务器)
+                    ACache.get(AppApplication.getAppContext()).put(AppConstant.STORE_PERSON_PHOTO, photoPath);
                 }
             }
         }
