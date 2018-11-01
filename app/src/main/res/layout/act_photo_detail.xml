@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:transitionName="transition_animation_news_photos" />
+            android:transitionName="@string/transition_photos" />
         <!--使用PhotoView，共享动画不平滑-->
     </zjl.example.com.regularone.widget.PullBackLayout>
 

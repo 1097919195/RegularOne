@@ -1,5 +1,7 @@
 package zjl.example.com.regularone.ui.news.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -72,10 +76,22 @@ public class PhotosDetailActivity extends AppCompatActivity implements PullBackL
     private Uri imageUri;
 
 
-    public static void startAction(Context context, String url){
+    public static void startAction(Context context, String url, View view){
         Intent intent = new Intent(context, PhotosDetailActivity.class);
         intent.putExtra(AppConstant.PHOTO_DETAIL,url);
+        //无过渡动画
         context.startActivity(intent);
+        //有过渡动画
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            ActivityOptions options = ActivityOptions
+//                    .makeSceneTransitionAnimation((Activity) context,view, AppConstant.TRANSITION_ANIMATION_NEWS_PHOTOS);
+//            context.startActivity(intent, options.toBundle());
+//        } else {
+//            //让新的Activity从一个小的范围扩大到全屏
+//            ActivityOptionsCompat options = ActivityOptionsCompat
+//                    .makeScaleUpAnimation(view, view.getWidth() / 2, view.getHeight() / 2, 0, 0);
+//            ActivityCompat.startActivity((Activity) context, intent, options.toBundle());
+//        }
     }
 
 
@@ -110,7 +126,7 @@ public class PhotosDetailActivity extends AppCompatActivity implements PullBackL
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
+                    finishAfterTransition();//支持过渡动画
                 } else {
                     finish();
                 }

@@ -19,4 +19,6 @@
     <string name="share">分享</string>
     <string name="share_contents">来自妹子的分享：%1$s %2$s</string>
 
+    <!-- 共享过度动画 引用的时候名字一定要相同-->
+    <string name="transition_photos">transition_animation_news_photos</string>
 </resources>

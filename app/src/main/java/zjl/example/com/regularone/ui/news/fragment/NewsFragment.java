@@ -118,7 +118,7 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PhotosDetailActivity.startAction(getActivity(),item.getUrl());
+                        PhotosDetailActivity.startAction(getActivity(),item.getUrl(), image);
                     }
                 });
             }

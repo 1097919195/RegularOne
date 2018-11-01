@@ -40,5 +40,6 @@ public class AppConstant {
     public static final String NEWS_LIST_TO_TOP = "NEWS_LIST_TO_TOP";
     public static final String PHOTO_DETAIL = "PHOTO_DETAIL";
     public static final String STORE_PERSON_PHOTO = "touxiang";
+    public static final String TRANSITION_ANIMATION_NEWS_PHOTOS = "transition_animation_news_photos";//过渡动画——引用的时候名字一定要相同
 
 }
