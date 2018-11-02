@@ -139,10 +139,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     .choose(MimeType.allOf()) // 选择 mime 的类型
                     .countable(true)
                     .capture(true)  // 开启相机，和 captureStrategy 一并使用否则报错
-                    .captureStrategy(new CaptureStrategy(true, BuildConfig.APPLICATION_ID + ".MyFileProvider")) // 拍照的图片路径
+                    .captureStrategy(new CaptureStrategy(false, BuildConfig.APPLICATION_ID + ".MyFileProvider")) // 第一个参数表示是否是私有存储位置
                     .maxSelectable(9) // 图片选择的最多数量
                     .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .theme(R.style.Matisse_Zhihu)
                     .thumbnailScale(0.85f) // 缩略图的比例
                     .imageEngine(new GlideEngine()) // 使用的图片加载引擎
                     .forResult(REQUEST_PHOTO); // 设置作为标记的请求码
