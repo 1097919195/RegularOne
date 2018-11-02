@@ -86,5 +86,6 @@ dependencies {
     compile 'com.lcodecorex:tkrefreshlayout:1.0.7'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
     implementation 'com.liulishuo.filedownloader:library:1.7.4'
+    compile 'com.zhihu.android:matisse:0.4.3'//图片选择库
 
 }

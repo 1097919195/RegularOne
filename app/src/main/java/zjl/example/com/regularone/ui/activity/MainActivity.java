@@ -2,8 +2,10 @@ package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -33,12 +35,17 @@ import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
 import util.UpdateAppUtils;
+import zjl.example.com.regularone.BuildConfig;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
@@ -125,7 +132,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void initListener() {
         photo.setOnClickListener(v ->{
-            openPicture();
+            //直接调用系统的打开相册
+//            openPicture();
+            //使用的图库选择器
+            Matisse.from(MainActivity.this)
+                    .choose(MimeType.allOf()) // 选择 mime 的类型
+                    .countable(true)
+                    .capture(true)  // 开启相机，和 captureStrategy 一并使用否则报错
+                    .captureStrategy(new CaptureStrategy(true, BuildConfig.APPLICATION_ID + ".MyFileProvider")) // 拍照的图片路径
+                    .maxSelectable(9) // 图片选择的最多数量
+                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f) // 缩略图的比例
+                    .imageEngine(new GlideEngine()) // 使用的图片加载引擎
+                    .forResult(REQUEST_PHOTO); // 设置作为标记的请求码
+
         });
     }
 
@@ -244,30 +265,37 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
         /**
-         * 更换头像
+         * 更换头像（直接调用系统的打开相册）
          */
-        if (requestCode == REQUEST_PHOTO) {
-            if (null != data) {
-                String photoPath = "";
-                // 获取选中图片的路径
-                Cursor cursor = getContentResolver().query(
-                        data.getData(), new String[]{MediaStore.Images.Media.DATA}, null, null, null);
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    photoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                    Log.e("photoPath", photoPath);
-                }
-                cursor.close();
+//        if (requestCode == REQUEST_PHOTO) {
+//            if (null != data) {
+//                String photoPath = "";
+//                // 获取选中图片的路径
+//                Cursor cursor = getContentResolver().query(
+//                        data.getData(), new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+//                if (cursor != null) {
+//                    cursor.moveToFirst();
+//                    photoPath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//                    Log.e("photoPath", photoPath);
+//                }
+//                cursor.close();
+//
+//                if (!"".equals(photoPath)) {
+//                    //将截取到图片以圆形的方式显示到imglogo
+////                    Glide.with(this).load(photoPath).into(photo);
+//                    ImageLoaderUtils.displayRound(this, photo, photoPath);
+//                    //将截取的头像logo放到缓存中(如果是服务器则需上传到服务器)
+//                    ACache.get(AppApplication.getAppContext()).put(AppConstant.STORE_PERSON_PHOTO, photoPath);
+//                }
+//            }
+//        }
 
-                if (!"".equals(photoPath)) {
-                    //将截取到图片以圆形的方式显示到imglogo
-//                    Glide.with(this).load(photoPath).into(photo);
-                    ImageLoaderUtils.displayRound(this, photo, photoPath);
-                    //将截取的头像logo放到缓存中(如果是服务器则需上传到服务器)
-                    ACache.get(AppApplication.getAppContext()).put(AppConstant.STORE_PERSON_PHOTO, photoPath);
-                }
-            }
+        //使用的图库选择器
+        if (requestCode == REQUEST_PHOTO && resultCode == RESULT_OK) {
+            List<Uri> uris = Matisse.obtainResult(data);
+            ImageLoaderUtils.displayRound(this, photo, uris.get(uris.size()-1).toString());
         }
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
