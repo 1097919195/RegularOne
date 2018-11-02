@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import util.UpdateAppUtils;
+import zhy.com.highlight.HighLight;
+import zhy.com.highlight.interfaces.HighLightInterface;
+import zhy.com.highlight.position.OnLeftPosCallback;
+import zhy.com.highlight.position.OnRightPosCallback;
+import zhy.com.highlight.position.OnTopPosCallback;
+import zhy.com.highlight.shape.CircleLightShape;
+import zhy.com.highlight.shape.RectLightShape;
+import zhy.com.highlight.view.HightLightView;
 import zjl.example.com.regularone.BuildConfig;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
@@ -66,6 +75,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     AboutFragment aboutFragment;
 
     ImageView photo;
+    private HighLight mHightLight;
 
     @Override
     public int getLayoutId() {
@@ -119,6 +129,54 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView.setCheckedItem(R.id.nav_menu_news);
         initPersonPhoto();
         initListener();
+        initHighLight();
+    }
+
+    private void initHighLight() {
+        mHightLight = new HighLight(MainActivity.this)//
+                .anchor(findViewById(R.id.drawer_layout))//如果是Activity上增加引导层，不需要设置anchor
+                .autoRemove(false)//设置背景点击高亮布局自动移除为false 默认为true
+                .intercept(true)//拦截属性默认为true 使下方ClickCallback生效
+//                .enableNext()
+                .setOnLayoutCallback(new HighLightInterface.OnLayoutCallback() {
+                    @Override
+                    public void onLayouted() {
+                        //界面布局完成添加tipview
+                        mHightLight.addHighLight(R.id.fab, R.layout.info_known, new HighLight.OnPosCallback() {
+                            /**
+                             * @param rightMargin 高亮view在anchor中的右边距
+                             * @param bottomMargin 高亮view在anchor中的下边距
+                             * @param rectF 高亮view的l,t,r,b,w,h都有
+                             * @param marginInfo 设置你的布局的位置，一般设置l,t或者r,b
+                             */
+                            @Override
+                            public void getPos(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
+                                marginInfo.rightMargin = rightMargin + rectF.width() / 2;
+                                marginInfo.bottomMargin = bottomMargin + rectF.height();
+                            }
+                        }, new CircleLightShape());
+                        //然后显示高亮布局
+                        mHightLight.show();
+                    }
+                });
+    }
+
+    /**
+     * 响应所有R.id.iv_known的控件的点击事件
+     * <p>
+     *  移除高亮布局
+     * </p>
+     *
+     * @param view
+     */
+    public void clickKnown(View view) {
+        if(mHightLight.isShowing() && mHightLight.isNext())//如果开启next模式
+        {
+            mHightLight.next();
+        }else
+        {
+            mHightLight.remove();
+        }
     }
 
     private void initPersonPhoto() {
