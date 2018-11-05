@@ -3,12 +3,14 @@ package zjl.example.com.regularone.ui.news.fragment;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.github.library.BaseRecyclerAdapter;
 import com.jaydenxiao.common.base.BaseFragmentLazy;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.LoadingView;
@@ -18,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.bean.PhotoGirl;
 import zjl.example.com.regularone.ui.news.activity.PhotosDetailActivity;
 import zjl.example.com.regularone.ui.news.contract.PhotosListContract;
@@ -71,6 +75,20 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
         initAdapter();
         initSwipRefresh();
         preDialogLoading();
+        initRxBus2();
+    }
+
+    private void initRxBus2() {
+        mRxManager.on(AppConstant.CHANGE_LIST, new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean isChecked) throws Exception {
+                if (isChecked) {
+                    recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                }else {
+                    recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+                }
+            }
+        });
     }
 
     private void preDialogLoading() {

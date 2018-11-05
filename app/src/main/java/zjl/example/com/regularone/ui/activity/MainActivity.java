@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.CollectionUtils;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 import util.UpdateAppUtils;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
@@ -76,6 +78,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     ImageView photo;
     private HighLight mHightLight;
+    private boolean changeList = true;
 
     @Override
     public int getLayoutId() {
@@ -91,6 +94,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void initView() {
         setSupportActionBar(toolbar);
         toolbar.setTitle("首页");
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showShort("切换排列方式");
+                if (changeList) {
+                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST,true);
+                    changeList = false;
+                }else {
+                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST,false);
+                    changeList = true;
+                }
+
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
