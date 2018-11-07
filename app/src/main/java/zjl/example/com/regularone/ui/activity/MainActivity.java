@@ -3,14 +3,11 @@ package zjl.example.com.regularone.ui.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -18,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,13 +24,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.ACache;
-import com.jaydenxiao.common.commonutils.CollectionUtils;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
-import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
@@ -43,27 +36,19 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
 import util.UpdateAppUtils;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnLeftPosCallback;
-import zhy.com.highlight.position.OnRightPosCallback;
-import zhy.com.highlight.position.OnTopPosCallback;
 import zhy.com.highlight.shape.CircleLightShape;
-import zhy.com.highlight.shape.RectLightShape;
-import zhy.com.highlight.view.HightLightView;
 import zjl.example.com.regularone.BuildConfig;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
-import zjl.example.com.regularone.utils.FileUtils;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
 
@@ -210,7 +195,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void initPersonPhoto() {
         //根据有无缓存 加载显示头像(如果是服务器则需要从服务器获取)
         if (ACache.get(AppApplication.getAppContext()).getAsString(AppConstant.STORE_PERSON_PHOTO) == null) {
-            ImageLoaderUtils.displayRound(this, photo, R.drawable.bg_about_land);
+            ImageLoaderUtils.displayRound(this, photo, R.drawable.bg_about_port);
         } else {
             ImageLoaderUtils.displayRound(this, photo, ACache.get(AppApplication.getAppContext()).getAsString(AppConstant.STORE_PERSON_PHOTO));
         }

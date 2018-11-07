@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/skip"
+        android:layout_margin="15dp"
+        android:layout_gravity="end"
+        android:background="@drawable/splash_skip"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:textColor="#ffffff"
+        android:padding="5dp"
+        android:textSize="12sp"
+        android:text="跳过广告"
+        />
+
+</FrameLayout>
