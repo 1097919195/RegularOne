@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -63,6 +64,7 @@ import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 import zjl.example.com.regularone.utils.FileUtils;
+import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +73,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.bottom_nav)
+    BottomNavigationViewEx bottomNavigationView;
     private static final int REQUEST_CODE = 1000;
     private static final int REQUEST_PHOTO = 1001;
     NewsMainFragment newsMainFragment;
@@ -147,6 +151,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initPersonPhoto();
         initListener();
         initHighLight();
+        initBottomNavigation();
+    }
+
+    private void initBottomNavigation() {
+        bottomNavigationView.enableAnimation(false);
+        bottomNavigationView.enableShiftingMode(false);
+        bottomNavigationView.enableItemShiftingMode(false);
     }
 
     private void initHighLight() {
