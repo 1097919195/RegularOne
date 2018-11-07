@@ -15,7 +15,9 @@ import butterknife.BindView;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.ui.news.fragment.NewsFragment;
+import zjl.example.com.regularone.utils.MyUtils;
 
+import static android.support.design.widget.TabLayout.MODE_FIXED;
 import static android.support.design.widget.TabLayout.MODE_SCROLLABLE;
 
 /**
@@ -57,7 +59,8 @@ public class NewsMainFragment extends BaseFragment{
         //建立关联
         tabLayout.setupWithViewPager(viewPager);
         //设置tabs根据容器大小的排列样式
-        tabLayout.setTabMode(MODE_SCROLLABLE);
+//        tabLayout.setTabMode(MODE_FIXED);
+        MyUtils.dynamicSetTabLayoutMode(tabLayout);
     }
 
     private NewsFragment createListFragments(String title) {
