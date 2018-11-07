@@ -16,5 +16,5 @@
     <item
         android:id="@+id/nav_menu_favorite"
         android:icon="@drawable/draw_diagrams"
-        android:title="@string/drawer_menu_favorite"/>
+        android:title="我的"/>
 </menu>
