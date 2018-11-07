@@ -70,12 +70,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initListener() {
-        skip.setOnClickListener(v -> {
-            Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -86,6 +80,15 @@ public class SplashActivity extends BaseActivity {
             }
         };
         timer.schedule(timerTask, 5500);
+
+        skip.setOnClickListener(v -> {
+            if (timer != null) {
+                timer.cancel();
+            }
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void initBanner() {
