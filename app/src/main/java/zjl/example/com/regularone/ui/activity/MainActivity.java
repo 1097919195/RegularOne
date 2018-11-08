@@ -8,6 +8,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -82,16 +84,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void initView() {
         setSupportActionBar(toolbar);
-        toolbar.setTitle("首页");
+        toolbar.setTitle("图片");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ToastUtil.showShort("切换排列方式");
                 if (changeList) {
-                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST,true);
+                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST, true);
                     changeList = false;
-                }else {
-                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST,false);
+                } else {
+                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST, false);
                     changeList = true;
                 }
 
@@ -132,7 +134,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         initFragment();
         //设置菜单默认选中项
-        navigationView.setCheckedItem(R.id.nav_menu_news);
+        navigationView.setCheckedItem(R.id.nav_menu_picture);
         initPersonPhoto();
         initListener();
         initHighLight();
@@ -143,6 +145,82 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         bottomNavigationView.enableAnimation(false);
         bottomNavigationView.enableShiftingMode(false);
         bottomNavigationView.enableItemShiftingMode(false);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        int titleResId = R.string.picture;
+                        switch (item.getItemId()) {
+                            case R.id.picture:
+                                selectFragment(0);
+                                titleResId = R.string.picture;
+                                break;
+                            case R.id.search:
+                                selectFragment(1);
+                                titleResId = R.string.search;
+                                break;
+                            case R.id.navigation:
+                                selectFragment(2);
+                                titleResId = R.string.navigation;
+                                break;
+                            case R.id.mine:
+                                selectFragment(3);
+                                titleResId = R.string.mine;
+                                break;
+                        }
+                        getSupportActionBar().setTitle(titleResId);
+                        return true;
+                    }
+                });
+    }
+
+    private void selectFragment(int position) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (position) {
+            case R.id.nav_menu_picture:
+            case 0:
+                fab.show();
+                toolbar.setTitle("图片");
+                transaction.show(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_search:
+            case 1:
+                fab.hide();
+                toolbar.setTitle("搜索");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_station:
+            case 2:
+                fab.hide();
+                toolbar.setTitle("地区");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_favorite:
+            case 3:
+                fab.hide();
+                toolbar.setTitle("收藏");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_setting:
+                fab.hide();
+                toolbar.setTitle("设置");
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                break;
+            case R.id.nav_menu_about:
+                fab.hide();
+                toolbar.setTitle("关于");
+                transaction.show(aboutFragment);
+                transaction.hide(newsMainFragment);
+                break;
+            default:
+                break;
+        }
+        transaction.commitAllowingStateLoss();
     }
 
     private void initHighLight() {
@@ -176,18 +254,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * 响应所有R.id.iv_known的控件的点击事件
-     * <p>
-     *  移除高亮布局
-     * </p>
-     *
+     * 移除高亮布局
      * @param view
      */
     public void clickKnown(View view) {
-        if(mHightLight.isShowing() && mHightLight.isNext())//如果开启next模式
+        if (mHightLight.isShowing() && mHightLight.isNext())//如果开启next模式
         {
             mHightLight.next();
-        }else
-        {
+        } else {
             mHightLight.remove();
         }
     }
@@ -202,7 +276,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initListener() {
-        photo.setOnClickListener(v ->{
+        photo.setOnClickListener(v -> {
             //直接调用系统的打开相册
 //            openPicture();
             //使用的图库选择器
@@ -272,9 +346,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     Dialog mLoadingDialog;
+
     private void dialogTest() {
         View view = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null);
-        mLoadingDialog = new Dialog(this,R.style.CustomProgressDialog);
+        mLoadingDialog = new Dialog(this, R.style.CustomProgressDialog);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mLoadingDialog.show();
     }
@@ -365,7 +440,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //使用的图库选择器
         if (requestCode == REQUEST_PHOTO && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
-            ImageLoaderUtils.displayRound(this, photo, uris.get(uris.size()-1).toString());
+            ImageLoaderUtils.displayRound(this, photo, uris.get(uris.size() - 1).toString());
         }
 
     }
@@ -373,49 +448,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
-        switch (id) {
-            case  R.id.nav_menu_news:
-                fab.show();
-                toolbar.setTitle("设置");
-                transaction.show(newsMainFragment);
-                transaction.hide(aboutFragment);
-                break;
-            case  R.id.nav_menu_picture:
-                fab.hide();
-                toolbar.setTitle("搜索");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                break;
-            case R.id.nav_menu_station:
-                fab.hide();
-                toolbar.setTitle("地区");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                break;
-            case R.id.nav_menu_favorite:
-                fab.hide();
-                toolbar.setTitle("收藏");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                break;
-            case R.id.nav_menu_setting:
-                fab.hide();
-                toolbar.setTitle("设置");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                break;
-            case R.id.nav_menu_about:
-                fab.hide();
-                toolbar.setTitle("关于");
-                transaction.show(aboutFragment);
-                transaction.hide(newsMainFragment);
-                break;
-            default:
-                break;
-        }
-        transaction.commitAllowingStateLoss();
+        selectFragment(id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

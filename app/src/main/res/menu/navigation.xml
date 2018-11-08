@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_menu_news"
+        android:id="@+id/picture"
         android:icon="@drawable/draw_station"
         android:title="@string/drawer_menu_picture"/>
     <item
-        android:id="@+id/nav_menu_picture"
+        android:id="@+id/search"
         android:icon="@drawable/draw_picture"
         android:title="@string/drawer_menu_station"/>
 
     <item
-        android:id="@+id/nav_menu_station"
+        android:id="@+id/navigation"
         android:icon="@drawable/draw_area"
         android:title="@string/drawer_menu_area"/>
     <item
-        android:id="@+id/nav_menu_favorite"
+        android:id="@+id/mine"
         android:icon="@drawable/draw_diagrams"
-        android:title="我的"/>
+        android:title="@string/mine"/>
 </menu>

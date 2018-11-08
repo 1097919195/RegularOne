@@ -5,13 +5,13 @@
     <item android:title="@string/drawer_menu_read">
         <menu>
             <item
-                android:id="@+id/nav_menu_news"
+                android:id="@+id/nav_menu_picture"
                 android:checkable="true"
                 android:checked="true"
                 android:icon="@drawable/draw_station"
                 android:title="@string/drawer_menu_picture"/>
             <item
-                android:id="@+id/nav_menu_picture"
+                android:id="@+id/nav_menu_search"
                 android:checkable="true"
                 android:icon="@drawable/draw_picture"
                 android:title="@string/drawer_menu_station"/>
