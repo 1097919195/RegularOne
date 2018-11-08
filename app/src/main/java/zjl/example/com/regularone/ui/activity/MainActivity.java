@@ -254,7 +254,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * 响应所有R.id.iv_known的控件的点击事件
+     * <p>
      * 移除高亮布局
+     * </p>
      * @param view
      */
     public void clickKnown(View view) {
