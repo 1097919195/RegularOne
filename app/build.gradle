@@ -89,5 +89,7 @@ dependencies {
     compile 'com.zhihu.android:matisse:0.4.3'//图片选择库（无裁剪）
     compile 'com.isanwenyu.highlight:highlight:1.8.0'//高亮
     compile 'com.youth.banner:banner:1.4.9'  //图片轮播
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'com.white.countdownbutton:countdownbtn:1.0.4'//验证码按钮
 
 }

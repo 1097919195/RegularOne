@@ -50,6 +50,7 @@ import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
+import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int REQUEST_PHOTO = 1001;
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
+    MineFragment mineFragment;
 
     ImageView photo;
     private HighLight mHightLight;
@@ -168,6 +170,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbar.setTitle("图片");
                 transaction.show(newsMainFragment);
                 transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
                 break;
             case R.id.nav_menu_search:
             case 1:
@@ -175,6 +178,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbar.setTitle("搜索");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
                 break;
             case R.id.nav_menu_station:
             case 2:
@@ -182,6 +186,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbar.setTitle("地区");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
                 break;
             case R.id.nav_menu_favorite:
             case 3:
@@ -189,18 +194,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 toolbar.setTitle("收藏");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
+                transaction.show(mineFragment);
                 break;
             case R.id.nav_menu_setting:
                 fab.hide();
                 toolbar.setTitle("设置");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
                 break;
             case R.id.nav_menu_about:
                 fab.hide();
                 toolbar.setTitle("关于");
                 transaction.show(aboutFragment);
                 transaction.hide(newsMainFragment);
+                transaction.hide(mineFragment);
                 break;
             default:
                 break;
@@ -307,9 +315,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         newsMainFragment = new NewsMainFragment();
         aboutFragment = new AboutFragment();
+        mineFragment = new MineFragment();
         transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
         transaction.add(R.id.rl_body, aboutFragment, "aboutFragment");
+        transaction.add(R.id.rl_body, mineFragment, "mineFragment");
         transaction.hide(aboutFragment);
+        transaction.hide(mineFragment);
         transaction.commit();
     }
 

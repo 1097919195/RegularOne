@@ -49,9 +49,10 @@
         <activity android:name=".ui.news.activity.PhotosDetailActivity"
             android:theme="@style/AppTheme.Trans"
             android:screenOrientation="nosensor"/>
-        <activity android:name=".ui.activity.AccountActivity"
+        <activity android:name=".ui.activity.LoginActivity"
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="nosensor"/>
