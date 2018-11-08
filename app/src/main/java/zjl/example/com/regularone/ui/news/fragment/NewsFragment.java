@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.github.library.BaseRecyclerAdapter;
 import com.jaydenxiao.common.base.BaseFragmentLazy;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.jaydenxiao.common.commonutils.SPUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -49,7 +50,6 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     private LinearLayoutManager layoutManager;
 
     ImageView imageView;
-
     @Override
     protected void lazyLoadData() {
         //加载初始化数据的时候，数据为空才重新发起请求(防止切回fragment调用该方法进行加载)
@@ -142,8 +142,14 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
             }
         };
         recyclerView.setAdapter(adapter);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+
+        if (SPUtils.getSharedStringData(getActivity(), AppConstant.RANK_LIST).equals("land")) {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        } else {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        }
+//        layoutManager = new LinearLayoutManager(getActivity());
+//        recyclerView.setLayoutManager(layoutManager);
 //        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 //        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 

@@ -69,7 +69,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     ImageView photo;
     private HighLight mHightLight;
-    private boolean changeList = true;
 
     @Override
     public int getLayoutId() {
@@ -85,20 +84,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void initView() {
         setSupportActionBar(toolbar);
         toolbar.setTitle("图片");
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.showShort("切换排列方式");
-                if (changeList) {
-                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST, true);
-                    changeList = false;
-                } else {
-                    RxBus2.getInstance().post(AppConstant.CHANGE_LIST, false);
-                    changeList = true;
-                }
-
-            }
-        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
