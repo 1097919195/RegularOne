@@ -17,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
@@ -52,6 +54,7 @@ import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
+import zjl.example.com.regularone.utils.TipsToast;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
 
@@ -71,6 +74,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     ImageView photo;
     private HighLight mHightLight;
+    private TipsToast tipsToast;
+    private long exitTime = 0;
 
     @Override
     public int getLayoutId() {
@@ -452,6 +457,47 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //双击而下才能推出
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                showTips(R.drawable.tips_smile, "再按一次退出程序");
+                exitTime = System.currentTimeMillis();
+            } else {
+                AppManager.getAppManager().finishAllActivity();
+                finish();
+            }
+            return true;
+        }
+
+        //不退出程序返回到桌面
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            Intent home = new Intent(Intent.ACTION_MAIN);
+//            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            home.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(home);
+//            return true;
+//        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 自定义toast
+     * @param iconResId 图片
+     * @param tips      提示文字
+     */
+    private void showTips(int iconResId, String tips) {
+        if (tipsToast == null) {
+            tipsToast = TipsToast.makeText(MainActivity.this.getApplication()
+                    .getBaseContext(), tips, TipsToast.LENGTH_SHORT);
+        }
+        tipsToast.show();
+        tipsToast.setIcon(iconResId);
+        tipsToast.setText(tips);
     }
 
 }

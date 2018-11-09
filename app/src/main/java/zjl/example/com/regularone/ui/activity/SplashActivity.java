@@ -32,6 +32,7 @@ public class SplashActivity extends BaseActivity {
     Button skip;
     private List<Integer> images = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
+    Timer timer;
     @Override
     public int getLayoutId() {
         return R.layout.act_splash;
@@ -70,7 +71,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initListener() {
-        Timer timer = new Timer();
+        timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -122,6 +123,14 @@ public class SplashActivity extends BaseActivity {
              */
             //Glide 加载图片简单用法
             Glide.with(context).load(path).into(imageView);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
         }
     }
 }

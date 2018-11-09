@@ -59,6 +59,7 @@
     </style>
 
     <!--普通dialog-->
+    <!--不可点击 <item name="android:windowCloseOnTouchOutside">false</item>-->
     <style name="CustomProgressDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
