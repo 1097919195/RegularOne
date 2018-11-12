@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void initView() {
         setSupportActionBar(toolbar);
-        toolbar.setTitle("图片");
+        getSupportActionBar().setTitle("图片");
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

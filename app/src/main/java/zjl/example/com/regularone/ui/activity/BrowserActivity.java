@@ -2,7 +2,9 @@ package zjl.example.com.regularone.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,20 +14,20 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.commonutils.LogUtils;
 
 import butterknife.BindView;
 import zjl.example.com.regularone.R;
 
 
 public class BrowserActivity extends BaseActivity {
-    ActionBar actionBar;
-
     private String url;
     private String title;
 
+    @BindView(R.id.browser_toolbar)
+    Toolbar toolbar;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
     @BindView(R.id.web_view)
@@ -47,11 +49,20 @@ public class BrowserActivity extends BaseActivity {
         url = intent.getStringExtra("URL");
         title = intent.getStringExtra("TITLE");
 
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(title != null ? title : "");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle(title != null ? title : "");
         }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else {
+                    finish();
+                }
+            }
+        });
 
         webView.getSettings().setJavaScriptEnabled(true);
 
@@ -59,38 +70,27 @@ public class BrowserActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 view.loadUrl(request.getUrl().toString());
-                return false;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                progressBar.setVisibility(View.GONE);
+                return false;//在webview中跳转，true表示在浏览器中打开跳转
             }
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                progressBar.setProgress(newProgress);
+                super.onProgressChanged(view, newProgress);
+                if (progressBar != null) {//防止关闭后报错
+                    if (newProgress == 100) {
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setProgress(newProgress);
+                    }
+                }
+
             }
         });
 
         webView.loadUrl(url);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -105,6 +105,9 @@ public class BrowserActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        progressBar = null;
+        if (webView != null) {
+            webView.removeAllViews();
+            webView.destroy();
+        }
     }
 }
