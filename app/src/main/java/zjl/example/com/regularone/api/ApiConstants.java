@@ -28,6 +28,11 @@ public class ApiConstants {
     public static final String PHOTO_HOST = "http://gank.io/api/";
 
     /**
+     * 玩Android网站
+     */
+    public static final String WAN_ANDROID = "http://www.wanandroid.com/";
+
+    /**
      * 获取对应的host
      *
      * @param hostType host类型
@@ -44,6 +49,9 @@ public class ApiConstants {
                 break;
             case HostType.PHOTO_HOST:
                 host = PHOTO_HOST;
+                break;
+            case HostType.ARTICLE_HOST:
+                host = WAN_ANDROID;
                 break;
             default:
                 host = "";

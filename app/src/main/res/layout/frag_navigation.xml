@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/typeList"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#ededed">
+
+    </android.support.v7.widget.RecyclerView>
+    <!--实现列表分组效果-->
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+        android:id="@+id/contentList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
+</LinearLayout>
+

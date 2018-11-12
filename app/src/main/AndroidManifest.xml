@@ -56,6 +56,8 @@
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="nosensor"/>
+        <activity android:name=".ui.activity.BrowserActivity"
+            android:screenOrientation="nosensor"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

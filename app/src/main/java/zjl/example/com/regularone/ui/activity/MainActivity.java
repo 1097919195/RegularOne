@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.baseapp.AppManager;
-import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
@@ -54,6 +53,7 @@ import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
+import zjl.example.com.regularone.ui.fragment.NavigationFragment;
 import zjl.example.com.regularone.utils.TipsToast;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
     MineFragment mineFragment;
+    NavigationFragment navigationFragment;
 
     ImageView photo;
     private HighLight mHightLight;
@@ -176,6 +177,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 transaction.show(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
+                transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_search:
             case 1:
@@ -184,6 +186,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
+                transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_station:
             case 2:
@@ -192,6 +195,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
+                transaction.show(navigationFragment);
                 break;
             case R.id.nav_menu_favorite:
             case 3:
@@ -200,6 +204,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.show(mineFragment);
+                transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_setting:
                 fab.hide();
@@ -207,13 +212,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
+                transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_about:
                 fab.hide();
                 toolbar.setTitle("关于");
-                transaction.show(aboutFragment);
                 transaction.hide(newsMainFragment);
+                transaction.show(aboutFragment);
                 transaction.hide(mineFragment);
+                transaction.hide(navigationFragment);
                 break;
             default:
                 break;
@@ -321,11 +328,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         newsMainFragment = new NewsMainFragment();
         aboutFragment = new AboutFragment();
         mineFragment = new MineFragment();
+        navigationFragment = new NavigationFragment();
         transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
         transaction.add(R.id.rl_body, aboutFragment, "aboutFragment");
         transaction.add(R.id.rl_body, mineFragment, "mineFragment");
+        transaction.add(R.id.rl_body, navigationFragment, "navigationFragment");
         transaction.hide(aboutFragment);
         transaction.hide(mineFragment);
+        transaction.hide(navigationFragment);
         transaction.commit();
     }
 

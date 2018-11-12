@@ -21,7 +21,7 @@ public class HostType {
     /**
      * 多少种Host类型
      */
-    public static final int TYPE_COUNT = 3;
+    public static final int TYPE_COUNT = 4;
 
     /**
      *质检系统测试
@@ -34,7 +34,12 @@ public class HostType {
     public static final int QUALITY_DATA = 2;
 
     /**
-     *质检系统
+     *图片
      */
     public static final int PHOTO_HOST = 3;
+
+    /**
+     *Article
+     */
+    public static final int ARTICLE_HOST = 4;
 }

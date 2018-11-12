@@ -1,11 +1,15 @@
 package zjl.example.com.regularone.api;
 
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
 import zjl.example.com.regularone.bean.GirlData;
+import zjl.example.com.regularone.bean.HttpResponse;
+import zjl.example.com.regularone.bean.NavCategory;
 
 /**
  * des:ApiService
@@ -63,6 +67,10 @@ public interface ApiService {
 //            @Header("Cache-Control") String cacheControl,
 //            @Path("type") String type,
 //            @Path("startPage") int startPage);
+
+    // 获取导航数据
+    @GET("navi/json")
+    Observable<HttpResponse<List<NavCategory>>> getNavCategories();
 
     /**
      * Test Api
