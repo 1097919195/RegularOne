@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jaydenxiao.common.base.BaseFragment;
+import com.jaydenxiao.common.commonutils.LogUtils;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
 
     private ContentListAdapter contentListAdapter;
     private BaseQuickAdapter<NavCategory, BaseViewHolder> typeAdapter;
+    private boolean startLinkage;
 
     @Override
     protected int getLayoutResource() {
@@ -63,10 +65,9 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
 
                     textView.setOnClickListener(v -> {
                         contentListView.setSelection(helper.getLayoutPosition());
-                        for (int i = 0; i < navCategories.size(); i++) {
-                            navCategories.get(i).setSelected(false);
-                        }
-                        item.setSelected(true);
+                        navCategories.get(getTypeAdapterSelectedPostion()).setSelected(false);
+                        navCategories.get(helper.getLayoutPosition()).setSelected(true);
+
                         notifyDataSetChanged();
                     });
 
@@ -76,7 +77,20 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
                         textView.setTextColor(getResources().getColor(R.color.black));
                     }
                 }
+
+                //获取当前选中的item的索引
+                private int getTypeAdapterSelectedPostion() {
+                    for (int i = 0; i < navCategories.size(); i++) {
+                        if (typeAdapter.getData().get(i).isSelected()) {
+                            return i;
+                        }
+                    }
+                    return 0;
+                }
             };
+
+
+
             typeListView.setAdapter(typeAdapter);
             typeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
             //右边的内容
@@ -85,19 +99,35 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
             contentListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    //防止调用setSelection的时候滚动数据关联的问题
+                    switch(scrollState) {
+                        case SCROLL_STATE_TOUCH_SCROLL:// 手指触屏拉动准备滚动，只触发一次        顺序: 1
+                            startLinkage = true;
+                            break;
+                        case SCROLL_STATE_FLING:// 持续滚动开始，只触发一次                顺序: 2
+                            break;
+                        case SCROLL_STATE_IDLE:// 整个滚动事件结束，只触发一次            顺序: 4
+                            startLinkage = false;
+                            break;
+                        default:
+                            break;
+                    }
 
                 }
 
+                // 一直在滚动中，多次触发                          顺序: 3
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    NavCategory item = navCategories.get(firstVisibleItem);
-                    //当前选中索引和滑动显示的最前面的索引不一致的时候触发
-                    if (!item.isSelected()) {
-                        navCategories.get(getTypeAdapterSelectedPostion()).setSelected(false);
-                        item.setSelected(true);
-                        typeAdapter.notifyDataSetChanged();
-                        //滑动到选中的item处
-                        typeListView.smoothScrollToPosition(getSelectedTypePosition());
+                    if (startLinkage) {
+                        NavCategory item = navCategories.get(firstVisibleItem);
+                        //当前选中索引和滑动显示的最前面的索引不一致的时候触发
+                        if (!item.isSelected()) {
+                            navCategories.get(getTypeAdapterSelectedPostion()).setSelected(false);
+                            item.setSelected(true);
+                            typeAdapter.notifyDataSetChanged();
+                            //滑动到选中的item处
+                            typeListView.smoothScrollToPosition(getSelectedTypePosition());
+                        }
                     }
                 }
 

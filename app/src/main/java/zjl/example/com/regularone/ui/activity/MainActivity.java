@@ -502,12 +502,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      */
     private void showTips(int iconResId, String tips) {
         if (tipsToast == null) {
-            tipsToast = TipsToast.makeText(MainActivity.this.getApplication()
-                    .getBaseContext(), tips, TipsToast.LENGTH_SHORT);
+            tipsToast = TipsToast.makeText(AppApplication.getAppContext(), tips, TipsToast.LENGTH_SHORT);
         }
         tipsToast.show();
         tipsToast.setIcon(iconResId);
         tipsToast.setText(tips);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (tipsToast != null) {
+            tipsToast.cancel();
+        }
+        super.onDestroy();
+    }
 }

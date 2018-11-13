@@ -8,12 +8,19 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.jaydenxiao.common.baserx.RxBus;
+
+import zjl.example.com.regularone.app.AppConstant;
+
+//快速滑动的一段时间内是无法点击的，或者需要双击
 @SuppressWarnings("unused")
 public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
 
+    //用来在代码里实例化Behavior的构造
     public BottomNavigationViewBehavior() {
     }
 
+    //如果要在布局中使用Behavior，这个构造是必须的
     public BottomNavigationViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
