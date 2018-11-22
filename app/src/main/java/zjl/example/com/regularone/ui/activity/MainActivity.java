@@ -32,6 +32,8 @@ import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhihu.matisse.Matisse;
@@ -90,6 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initView() {
+        Beta.checkUpgrade(false,false);//检查更新
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("图片");
 

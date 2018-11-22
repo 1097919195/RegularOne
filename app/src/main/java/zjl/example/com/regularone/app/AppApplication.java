@@ -4,6 +4,8 @@ import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.polidea.rxandroidble2.RxBleClient;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
@@ -24,8 +26,12 @@ public class AppApplication extends BaseApplication{
         ZXingLibrary.initDisplayOpinion(this);
         FileDownloader.setup(this);//注意作者已经不建议使用init方法
 
-        CrashReport.initCrashReport(getApplicationContext(),"68840e3481",true);
-        CrashReport.setUserId(this,"Riven,the Exile");
+//        CrashReport.initCrashReport(getApplicationContext(),"68840e3481",true);
+//        CrashReport.setUserId(this,"Riven,the Exile");
+        Beta.autoCheckUpgrade = false;//取消初始化自动更新（在mainActivity中调用更新）
+        Bugly.init(getApplicationContext(),"68840e3481",false);//统一处理异常上报和更新
+        Bugly.setUserId(this,"Riven,the Exile");
+
     }
 
     /**

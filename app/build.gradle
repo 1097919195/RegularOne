@@ -94,6 +94,7 @@ dependencies {
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.google.android:flexbox:1.0.0'//支持换行的linearLayout
 
-    compile'com.tencent.bugly:crashreport:latest.release'
+//    compile'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//使用升级SDK需要把原来的替换掉
 
 }
