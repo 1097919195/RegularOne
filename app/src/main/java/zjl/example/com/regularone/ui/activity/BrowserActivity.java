@@ -78,14 +78,14 @@ public class BrowserActivity extends BaseActivity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-//                if (progressBar != null) {//防止关闭后报错
+                if (progressBar != null) {//防止关闭后报错
                     if (newProgress == 100) {
                         progressBar.setVisibility(View.GONE);
                     } else {
                         progressBar.setVisibility(View.VISIBLE);
                         progressBar.setProgress(newProgress);
                     }
-//                }
+                }
 
             }
         });
