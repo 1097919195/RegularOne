@@ -197,7 +197,8 @@ public class PhotosDetailActivity extends AppCompatActivity implements PullBackL
 
     //调用的函数
     @Override
-    public void onPull(float progress) {
+    public void onPull(float progress1) {
+        float progress = Math.abs(progress1);//保证手指上滑的时候也能正常的使背景透明
         progress = Math.min(1f, progress * 3f);
         mBackground.setAlpha((int) (0xff/*255*/ * (1f - progress)));
     }

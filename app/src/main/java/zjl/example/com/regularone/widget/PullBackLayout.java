@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -53,8 +54,8 @@ public class PullBackLayout extends FrameLayout {
 
     public PullBackLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        dragger = ViewDragHelper.create(this, 1f / 8f, new ViewDragCallback()); // 1f / 8f是敏感度参数参数越大越敏感
-        minimumFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
+        dragger = ViewDragHelper.create(this, 1f / 2f, new ViewDragCallback()); // 1f / 8f是敏感度参数参数越大越敏感
+        minimumFlingVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();//获取Fling速度最小值
     }
 
     public void setCallback(@Nullable Callback callback) {
@@ -119,12 +120,12 @@ public class PullBackLayout extends FrameLayout {
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return Math.max(0, top);
+            return top;
         }
 
         @Override
         public int getViewHorizontalDragRange(View child) {
-            return 0;
+            return 0;//默认是0即不支持水平滑动
         }
 
         @Override
@@ -151,8 +152,9 @@ public class PullBackLayout extends FrameLayout {
         //手指释放的时候回调
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-            int slop = yvel > minimumFlingVelocity ? getHeight() / 6 : getHeight() / 3;
-            if (releasedChild.getTop() > slop) {
+//            int slop = yvel > minimumFlingVelocity ? getHeight() / 6 : getHeight() / 3;
+            int slop = Math.abs(yvel) > minimumFlingVelocity ? getHeight() / 6 : getHeight() / 3;//保证上滑也可以实现效果
+            if (releasedChild.getTop() > slop||-releasedChild.getTop()>slop) {
                 if (callback != null) {
                     callback.onPullComplete();
                 }
