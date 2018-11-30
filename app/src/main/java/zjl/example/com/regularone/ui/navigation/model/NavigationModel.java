@@ -19,7 +19,7 @@ public class NavigationModel implements NavigationContract.Model {
     @Override
     public Observable<List<NavCategory>> getNavCategory() {
         return Api.getDefault(HostType.ARTICLE_HOST)
-                .getNavCategories()
+                .getNavCategories(Api.getCacheControl())
                 .map(new Api.HttpResponseFunc<>())
                 .compose(RxSchedulers.io_main());
     }

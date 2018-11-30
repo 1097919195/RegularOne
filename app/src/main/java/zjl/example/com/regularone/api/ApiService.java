@@ -70,7 +70,9 @@ public interface ApiService {
 
     // 获取导航数据
     @GET("navi/json")
-    Observable<HttpResponse<List<NavCategory>>> getNavCategories();
+    Observable<HttpResponse<List<NavCategory>>> getNavCategories(
+            @Header("Cache-Control") String cacheControl
+    );
 
     /**
      * Test Api

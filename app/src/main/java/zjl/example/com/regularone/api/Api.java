@@ -41,7 +41,7 @@ import zjl.example.com.regularone.utils.exception.TimeoutException;
  * on 2016.06.15:47
  */
 public class Api {
-    //读超时长，单位：毫秒
+    //读超时长，单位：毫秒   一般是5-10，10-20还是得看具体的情况
     public static final int READ_TIME_OUT = 7676;
     //连接时长，单位：毫秒
     public static final int CONNECT_TIME_OUT = 7676;
