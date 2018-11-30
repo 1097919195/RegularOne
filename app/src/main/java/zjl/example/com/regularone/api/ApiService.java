@@ -68,7 +68,7 @@ public interface ApiService {
 //            @Path("type") String type,
 //            @Path("startPage") int startPage);
 
-    // 获取导航数据
+    // 获取导航数据 (如果返回504就需要注意了使用本地header缓存的话需要有存储权限)
     @GET("navi/json")
     Observable<HttpResponse<List<NavCategory>>> getNavCategories(
             @Header("Cache-Control") String cacheControl
