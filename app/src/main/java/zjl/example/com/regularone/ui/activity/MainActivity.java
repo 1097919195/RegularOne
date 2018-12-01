@@ -518,7 +518,10 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         //使用的图库选择器
         if (requestCode == REQUEST_PHOTO && resultCode == RESULT_OK) {
             List<Uri> uris = Matisse.obtainResult(data);
-            ImageLoaderUtils.displayRound(this, photo, uris.get(uris.size() - 1).toString());
+            String photoPath = uris.get(uris.size() - 1).toString();
+            ImageLoaderUtils.displayRound(this, photo, photoPath);
+            //将截取的头像logo放到缓存中(如果是服务器则需上传到服务器)
+            ACache.get(AppApplication.getAppContext()).put(AppConstant.STORE_PERSON_PHOTO, photoPath);
         }
 
     }
