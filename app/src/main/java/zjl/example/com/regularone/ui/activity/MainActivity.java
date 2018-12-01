@@ -25,12 +25,15 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -52,16 +55,26 @@ import zjl.example.com.regularone.BuildConfig;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
+import zjl.example.com.regularone.bean.WeatherInfo;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 import zjl.example.com.regularone.ui.fragment.NavigationFragment;
+import zjl.example.com.regularone.ui.main.contract.MainContract;
+import zjl.example.com.regularone.ui.main.module.MainModule;
+import zjl.example.com.regularone.ui.main.presenter.MainPresenter;
 import zjl.example.com.regularone.utils.TipsToast;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<MainPresenter,MainModule> implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.locationNow)
+    TextView locationNow;
+    @BindView(R.id.weather_condition)
+    TextView weather_condition;
+    @BindView(R.id.temperature)
+    TextView temperature;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -87,7 +100,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initPresenter() {
-
+        mPresenter.setVM(this,mModel);
     }
 
     @Override
@@ -110,6 +123,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                mPresenter.getWeatherInfoRequest();//打开了就要更新天气的状态
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -371,6 +405,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void returnWeatherInfo(WeatherInfo weatherInfo) {
+        if (weatherInfo != null) {
+            locationNow.setText(weatherInfo.getResults().get(0).getLocation().getName());
+            weather_condition.setText(weatherInfo.getResults().get(0).getNow().getText());
+            temperature.setText(weatherInfo.getResults().get(0).getNow().getTemperature() + "°");
+
+            String s = new Gson().toJson(weatherInfo);
+            LogUtils.loge(s);
+        }
+    }
+
+    @Override
+    public void showLoading(String title) {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void showErrorTip(String msg) {
+        ToastUtil.showShort(msg);
+    }
+
+    //该事件会被onKeyDown先执行（所以关闭侧滑事件和判断双击退出需要在onkeyDown里面判断）
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -474,24 +536,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        //双击而下才能推出
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                showTips(R.drawable.tips_smile, "再按一次退出程序");
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            //双击而下才能推出
+            if (keyCode == KeyEvent.KEYCODE_BACK
+                    && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    showTips(R.drawable.tips_smile, "再按一次退出程序");
 //                ToastUtil.showToastWithImg("再按一次退出程序", R.drawable.bg_about);
-                exitTime = System.currentTimeMillis();
-            } else {
-                if (tipsToast != null) {
-                    tipsToast.cancel();
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    if (tipsToast != null) {
+                        tipsToast.cancel();
+                    }
+                    AppManager.getAppManager().finishAllActivity();
+                    finish();
                 }
-                AppManager.getAppManager().finishAllActivity();
-                finish();
+                return true;
             }
-            return true;
-        }
 
-        //不退出程序返回到桌面
+            //不退出程序返回到桌面
 //        if (keyCode == KeyEvent.KEYCODE_BACK) {
 //            Intent home = new Intent(Intent.ACTION_MAIN);
 //            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -499,6 +565,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //            startActivity(home);
 //            return true;
 //        }
+        }
         return super.onKeyDown(keyCode, event);
     }
 

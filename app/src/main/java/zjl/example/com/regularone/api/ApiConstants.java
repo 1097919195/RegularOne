@@ -33,6 +33,11 @@ public class ApiConstants {
     public static final String WAN_ANDROID = "http://www.wanandroid.com/";
 
     /**
+     * 心知天气
+     */
+    public static final String WEATHER = "https://api.thinkpage.cn/";
+
+    /**
      * 获取对应的host
      *
      * @param hostType host类型
@@ -52,6 +57,9 @@ public class ApiConstants {
                 break;
             case HostType.ARTICLE_HOST:
                 host = WAN_ANDROID;
+                break;
+            case HostType.WEATHER_HOST:
+                host = WEATHER;
                 break;
             default:
                 host = "";

@@ -7,9 +7,11 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import zjl.example.com.regularone.bean.GirlData;
 import zjl.example.com.regularone.bean.HttpResponse;
 import zjl.example.com.regularone.bean.NavCategory;
+import zjl.example.com.regularone.bean.WeatherInfo;
 
 /**
  * des:ApiService
@@ -72,6 +74,13 @@ public interface ApiService {
     @GET("navi/json")
     Observable<HttpResponse<List<NavCategory>>> getNavCategories(
             @Header("Cache-Control") String cacheControl
+    );
+
+    // 心知天气
+    @GET("v3/weather/now.json")
+    Observable<WeatherInfo> getWeather(
+            @Query("key") String key,
+            @Query("location") String location
     );
 
     /**
