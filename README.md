@@ -5,6 +5,6 @@
 asdfasdfasdf
 ```
 
-<!-- ![](./image/screenshot.jpg) -->
+ ![美女.jpg](./image/screenshot.jpg)
 <img src="./image/screenshot.jpg" width="25%" />
 
