@@ -44,4 +44,6 @@ public class AppConstant {
     public static final String CHANGE_LIST = "CHANGE_LIST";
     public static final String RANK_LIST = "RANK_LIST";
 
+    public static final String MENU_SHOW_HIDE="MENU_SHOW_HIDE";
+
 }

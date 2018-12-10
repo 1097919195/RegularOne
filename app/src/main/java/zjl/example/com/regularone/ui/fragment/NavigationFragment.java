@@ -1,13 +1,18 @@
 package zjl.example.com.regularone.ui.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jaydenxiao.common.base.BaseFragment;
+import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.LogUtils;
 
 import java.util.List;
@@ -15,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.bean.NavCategory;
 import zjl.example.com.regularone.ui.navigation.adapter.ContentListAdapter;
 import zjl.example.com.regularone.ui.navigation.contract.NavigationContract;
@@ -149,6 +155,34 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
                         }
                     }
                     return 0;
+                }
+            });
+
+            //这里使用onTouch事件来判断更好（根据OnScroll监听item滑动的距离还是没有那么精确，万一item较高就会有问题）
+            //注意这里的显示隐藏底部导航和嵌套滑动监听的状态显示问题还需要兼容的（使用的话把下面的注释取消就好了）
+            contentListView.setOnTouchListener(new View.OnTouchListener() {
+                float firstY = 0;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+//                        switch (event.getAction()){
+//                            case MotionEvent.ACTION_DOWN:
+//                                firstY=event.getY();
+//                                break;
+//                            case MotionEvent.ACTION_MOVE:
+//                                float moveY = event.getY();
+//                                Log.e("moveY_START",moveY+"");
+//                                //往上滑动值会变小
+//                                if(moveY < firstY-50){
+//                                    RxBus2.getInstance().post(AppConstant.MENU_SHOW_HIDE,false);
+//                                    firstY = moveY;//事件触发之后及时记录位置方便下次判断
+//                                }
+//                                if (moveY > firstY+50){
+//                                    RxBus2.getInstance().post(AppConstant.MENU_SHOW_HIDE,true);
+//                                    firstY = moveY;
+//                                }
+//                                break;
+//                        }
+                    return false;
                 }
             });
         }

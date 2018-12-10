@@ -47,6 +47,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
 import util.UpdateAppUtils;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
@@ -169,6 +170,20 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         initListener();
         initHighLight();
         initBottomNavigation();
+        initRxBusListener();
+    }
+
+    private void initRxBusListener() {
+        mRxManager.on(AppConstant.MENU_SHOW_HIDE, new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                if (aBoolean) {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }else {
+                    bottomNavigationView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void initBottomNavigation() {
