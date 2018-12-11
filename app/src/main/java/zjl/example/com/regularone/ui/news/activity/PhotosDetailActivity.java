@@ -86,6 +86,7 @@ public class PhotosDetailActivity extends AppCompatActivity implements PullBackL
 //            ActivityOptions options = ActivityOptions
 //                    .makeSceneTransitionAnimation((Activity) context,view, AppConstant.TRANSITION_ANIMATION_NEWS_PHOTOS);
 //            context.startActivity(intent, options.toBundle());
+//
 //        } else {
 //            //让新的Activity从一个小的范围扩大到全屏
 //            ActivityOptionsCompat options = ActivityOptionsCompat
@@ -210,12 +211,8 @@ public class PhotosDetailActivity extends AppCompatActivity implements PullBackL
 
     @Override
     public void onPullComplete() {
-        supportFinishAfterTransition();
-    }
-
-    @Override
-    public void supportFinishAfterTransition() {
-        super.supportFinishAfterTransition();
+//        finish();
+        supportFinishAfterTransition();//防止有过渡动画的时候显示不出来
     }
 
     @Override
