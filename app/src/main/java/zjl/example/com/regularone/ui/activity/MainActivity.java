@@ -3,11 +3,14 @@ package zjl.example.com.regularone.ui.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +20,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,6 +48,7 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,6 +69,7 @@ import zjl.example.com.regularone.ui.fragment.NavigationFragment;
 import zjl.example.com.regularone.ui.main.contract.MainContract;
 import zjl.example.com.regularone.ui.main.module.MainModule;
 import zjl.example.com.regularone.ui.main.presenter.MainPresenter;
+import zjl.example.com.regularone.utils.FileUtils;
 import zjl.example.com.regularone.utils.TipsToast;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
@@ -84,6 +90,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     BottomNavigationViewEx bottomNavigationView;
     private static final int REQUEST_CODE = 1000;
     private static final int REQUEST_PHOTO = 1001;
+    private static final int CROP_PICTURE = 2000;
     NewsMainFragment newsMainFragment;
     AboutFragment aboutFragment;
     MineFragment mineFragment;
@@ -537,7 +544,50 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
             ImageLoaderUtils.displayRound(this, photo, photoPath);
             //将截取的头像logo放到缓存中(如果是服务器则需上传到服务器)
             ACache.get(AppApplication.getAppContext()).put(AppConstant.STORE_PERSON_PHOTO, photoPath);
+
+//            cropImageUri(uris.get(uris.size() - 1), 300, 300, CROP_PICTURE);//简单的调用裁剪(待优化)
         }
+
+        //裁剪选择的图片
+        if (requestCode == CROP_PICTURE) {
+            if(data != null){
+                Bitmap bitmap = data.getParcelableExtra("data");
+                photo.setImageBitmap(bitmap);
+            }else{
+                LogUtils.loge("CHOOSE_SMALL_PICTURE: data = " + data);
+            }
+        }
+    }
+
+    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode){
+        File file = new File(uri + "/" + System.currentTimeMillis() + ".jpg");
+        LogUtils.loge(file.toString());
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+
+        intent.setDataAndType(uri, "image/*");
+
+        intent.putExtra("crop", "true");
+
+        intent.putExtra("aspectX", 1);
+
+        intent.putExtra("aspectY", 1);
+
+        intent.putExtra("outputX", outputX);
+
+        intent.putExtra("outputY", outputY);
+
+        intent.putExtra("scale", true);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+
+        intent.putExtra("return-data", true);//这里有个参数"return-data" 是否返回数据。建议，裁剪高分辨率图片，使用Uri不返回数据，小图使用Bitmap并返回数据。
+
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+
+        intent.putExtra("noFaceDetection", true); // no face detection
+
+        startActivityForResult(intent, requestCode);
 
     }
 
