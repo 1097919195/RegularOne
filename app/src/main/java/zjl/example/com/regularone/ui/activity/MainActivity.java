@@ -171,8 +171,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         }
 
         initFragment();
-        //设置菜单默认选中项
-        navigationView.setCheckedItem(R.id.nav_menu_picture);
+//        navigationView.setCheckedItem(R.id.nav_menu_picture);//设置菜单默认选中项(暂时取消了选中的功能)
         initPersonPhoto();
         initListener();
         initHighLight();
@@ -264,12 +263,8 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_search:
-                fab.hide();
-                toolbar.setTitle("搜索");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                transaction.hide(mineFragment);
-                transaction.hide(navigationFragment);
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_station:
                 fab.hide();

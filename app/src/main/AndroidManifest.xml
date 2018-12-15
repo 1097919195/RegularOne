@@ -64,6 +64,8 @@
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.activity.BrowserActivity"
             android:screenOrientation="nosensor"/>
+        <activity android:name=".ui.activity.SearchActivity"
+            android:screenOrientation="nosensor"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

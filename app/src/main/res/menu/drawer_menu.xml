@@ -6,24 +6,23 @@
         <menu>
             <item
                 android:id="@+id/nav_menu_picture"
-                android:checkable="true"
-                android:checked="true"
+                android:checkable="false"
                 android:icon="@drawable/draw_station"
                 android:title="@string/drawer_menu_picture"/>
             <item
                 android:id="@+id/nav_menu_search"
-                android:checkable="true"
+                android:checkable="false"
                 android:icon="@drawable/draw_picture"
                 android:title="@string/drawer_menu_station"/>
 
             <item
                 android:id="@+id/nav_menu_station"
-                android:checkable="true"
+                android:checkable="false"
                 android:icon="@drawable/draw_diagrams"
                 android:title="@string/drawer_menu_media"/>
             <item
                 android:id="@+id/nav_menu_favorite"
-                android:checkable="true"
+                android:checkable="false"
                 android:icon="@drawable/ic_menu_favorite"
                 android:title="@string/drawer_menu_favorite"/>
         </menu>
@@ -33,12 +32,12 @@
         <menu>
             <item
                 android:id="@+id/nav_menu_setting"
-                android:checkable="true"
+                android:checkable="false"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/drawer_menu_setting" />
             <item
                 android:id="@+id/nav_menu_about"
-                android:checkable="true"
+                android:checkable="false"
                 android:icon="@drawable/drawer_about"
                 android:title="@string/drawer_menu_about"/>
         </menu>

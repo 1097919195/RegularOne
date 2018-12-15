@@ -97,4 +97,13 @@ dependencies {
 //    compile'com.tencent.bugly:crashreport:latest.release'
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//使用升级SDK需要把原来的替换掉
 
+    // 状态栏沉浸：https://github.com/gyf-dev/ImmersionBar
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+    // 侧滑功能：https://github.com/bingoogolapple/BGASwipeBackLayout-Android
+    implementation 'cn.bingoogolapple:bga-swipebacklayout:1.1.9@aar'
+    // 标题栏：https://github.com/getActivity/TitleBar
+    implementation 'com.hjq:titlebar:3.5'
+    // 圆形的ImageView：https://github.com/hdodenhof/CircleImageView
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }
