@@ -16,7 +16,8 @@
     <string name="drawer_menu_area">文档分类</string>
     <string name="drawer_menu_mine">我的</string>
     <string name="drawer_menu_station">B站搜索</string>
-    <string name="drawer_menu_media">媒体入口</string>//到时可以修改为图表相关的
+    <!--这块内容可以选择 媒体或者图表-->
+    <string name="drawer_menu_media">媒体入口</string>
     <string name="drawer_menu_favorite">收藏内容</string>
 
 

@@ -273,7 +273,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 break;
             case R.id.nav_menu_station:
                 fab.hide();
-                toolbar.setTitle("媒体");
+                toolbar.setTitle("媒体");//这块内容到时候也可以切换为图标
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
