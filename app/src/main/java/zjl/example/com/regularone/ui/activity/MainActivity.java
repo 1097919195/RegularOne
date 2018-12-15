@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                                 break;
                             case R.id.search:
                                 selectFragment(1);
-                                titleResId = R.string.search;
+                                titleResId = R.string.video;
                                 break;
                             case R.id.navigation:
                                 selectFragment(2);
@@ -229,6 +229,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     private void selectFragment(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (position) {
+            //主页兼侧滑的图片分类
             case R.id.nav_menu_picture:
             case 0:
                 fab.show();
@@ -238,8 +239,31 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 break;
-            case R.id.nav_menu_search:
+                //视频专区
             case 1:
+                fab.hide();
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
+                transaction.hide(navigationFragment);
+                break;
+                //文档分类
+            case 2:
+                fab.hide();
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                transaction.hide(mineFragment);
+                transaction.show(navigationFragment);
+                break;
+                //我的
+            case 3:
+                fab.hide();
+                transaction.hide(newsMainFragment);
+                transaction.hide(aboutFragment);
+                transaction.show(mineFragment);
+                transaction.hide(navigationFragment);
+                break;
+            case R.id.nav_menu_search:
                 fab.hide();
                 toolbar.setTitle("搜索");
                 transaction.hide(newsMainFragment);
@@ -248,21 +272,19 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_station:
-            case 2:
                 fab.hide();
-                toolbar.setTitle("地区");
+                toolbar.setTitle("媒体");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
-                transaction.show(navigationFragment);
+                transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_favorite:
-            case 3:
                 fab.hide();
                 toolbar.setTitle("收藏");
                 transaction.hide(newsMainFragment);
                 transaction.hide(aboutFragment);
-                transaction.show(mineFragment);
+                transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 break;
             case R.id.nav_menu_setting:

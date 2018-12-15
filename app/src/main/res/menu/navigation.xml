@@ -6,8 +6,8 @@
         android:title="@string/drawer_menu_picture"/>
     <item
         android:id="@+id/search"
-        android:icon="@drawable/draw_picture"
-        android:title="@string/drawer_menu_station"/>
+        android:icon="@drawable/ic_menu_video"
+        android:title="@string/drawer_menu_video"/>
 
     <item
         android:id="@+id/navigation"
@@ -15,6 +15,6 @@
         android:title="@string/drawer_menu_area"/>
     <item
         android:id="@+id/mine"
-        android:icon="@drawable/draw_diagrams"
-        android:title="@string/mine"/>
+        android:icon="@drawable/ic_menu_mine"
+        android:title="@string/drawer_menu_mine"/>
 </menu>
