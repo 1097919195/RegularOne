@@ -1,6 +1,7 @@
 package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -66,6 +67,7 @@ import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 import zjl.example.com.regularone.ui.fragment.NavigationFragment;
+import zjl.example.com.regularone.ui.fragment.PreferenceSettingFragment;
 import zjl.example.com.regularone.ui.main.contract.MainContract;
 import zjl.example.com.regularone.ui.main.module.MainModule;
 import zjl.example.com.regularone.ui.main.presenter.MainPresenter;
@@ -76,6 +78,8 @@ import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
 public class MainActivity extends BaseActivity<MainPresenter,MainModule> implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.ivLoadView)
+    ImageView ivLoadView;
     @BindView(R.id.locationNow)
     TextView locationNow;
     @BindView(R.id.weather_condition)
@@ -95,6 +99,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     AboutFragment aboutFragment;
     MineFragment mineFragment;
     NavigationFragment navigationFragment;
+    PreferenceSettingFragment settingFragment;
 
     ImageView photo;
     private HighLight mHightLight;
@@ -227,6 +232,11 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 
     private void selectFragment(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        android.app.FragmentTransaction transactionWithPre = getFragmentManager().beginTransaction();//注意PreferenceFragment使用的包不同
+
+        if (position != R.id.nav_menu_setting) {
+            ivLoadView.setVisibility(View.VISIBLE);
+        }
         switch (position) {
             //主页兼侧滑的图片分类
             case R.id.nav_menu_picture:
@@ -237,6 +247,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
                 //视频专区
             case 1:
@@ -245,6 +256,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
                 //文档分类
             case 2:
@@ -253,6 +265,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.show(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
                 //我的
             case 3:
@@ -261,6 +274,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.show(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
             case R.id.nav_menu_search:
                 Intent intent = new Intent(this, SearchActivity.class);
@@ -273,6 +287,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
             case R.id.nav_menu_favorite:
                 fab.hide();
@@ -281,6 +296,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
             case R.id.nav_menu_setting:
                 fab.hide();
@@ -289,6 +305,10 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.show(settingFragment);
+                // TODO: 2018/12/17 0017
+                // 这个偏好fragment好像不会覆盖，所以需要把这里的加载动画隐藏（这里有空最好实现一下整体的封装，这里是简单的添加在了MainActivity中）
+                ivLoadView.setVisibility(View.GONE);
                 break;
             case R.id.nav_menu_about:
                 fab.hide();
@@ -297,11 +317,13 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.show(aboutFragment);
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
+                transactionWithPre.hide(settingFragment);
                 break;
             default:
                 break;
         }
         transaction.commitAllowingStateLoss();
+        transactionWithPre.commitAllowingStateLoss();
     }
 
     private void initHighLight() {
@@ -405,6 +427,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         aboutFragment = new AboutFragment();
         mineFragment = new MineFragment();
         navigationFragment = new NavigationFragment();
+        settingFragment = new PreferenceSettingFragment();
         transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
         transaction.add(R.id.rl_body, aboutFragment, "aboutFragment");
         transaction.add(R.id.rl_body, mineFragment, "mineFragment");
@@ -413,11 +436,15 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         transaction.hide(mineFragment);
         transaction.hide(navigationFragment);
         transaction.commit();
+
+        android.app.FragmentTransaction transactionWithPre = getFragmentManager().beginTransaction();
+        transactionWithPre.add(R.id.rl_body, settingFragment, "settingFragment");
+        transactionWithPre.hide(settingFragment);
+        transactionWithPre.commit();
     }
 
     private void loadingViewTest() {
-        ImageView imageView = (ImageView) findViewById(R.id.ivLoadView);
-        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        AnimationDrawable animationDrawable = (AnimationDrawable) ivLoadView.getDrawable();
         animationDrawable.start();
     }
 

@@ -1,20 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:key="theme_switch"
-        android:title="@string/pref_title_theme_switch"/>
-    <CheckBoxPreference android:key="enable_no_image_mode"
-        android:title="@string/pref_title_no_image_mode"
-        android:summary="@string/pref_summary_no_image_mode"
-        android:defaultValue="false"/>
-    <Preference android:key="clear_cache"
-        android:title="@string/pref_title_clear_cache"/>
-    <Preference android:key="version_info"
-        android:title="@string/pref_title_version_info"
-        android:summary="@string/pref_summary_version_info"/>
-    <Preference android:key="change_log"
-        android:title="@string/pref_title_change_log"/>
-    <Preference android:key="open_source_libraries"
-        android:title="@string/pref_title_open_source_libraries" />
-    <Preference android:key="about"
-        android:title="@string/pref_title_about"/>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="显示一排偏好">
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="开关偏好1"
+            android:summary="这是一个开关按钮1" />
+        <SwitchPreference
+            android:key="switch_preference"
+            android:title="开关偏好2"
+            android:summary="这是一个开关按钮2" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="基于对话框的偏好">
+        <EditTextPreference
+            android:key="edittext_preference"
+            android:title="文本输入偏好"
+            android:summary="使用一个文本框对话框"
+            android:dialogTitle="输入你的宠物" />
+        <ListPreference
+            android:key="list_preference"
+            android:title="列表偏好"
+            android:summary="使用一个列表对话框"
+            android:entries="@array/entries_list_preference"
+            android:entryValues="@array/entryvalues_list_preference"
+            android:dialogTitle="选择一个" />
+        <MultiSelectListPreference
+            android:title="多选列表偏好"
+            android:key="multiSelectList_preference"
+            android:summary="使用一个多选列表对话框"
+            android:entries="@array/entries_list_preference"
+            android:entryValues="@array/entryvalues_list_preference"
+            android:dialogTitle="选择几个" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="启动偏好">
+        <PreferenceScreen
+            android:key="screen_preference"
+            android:title="屏幕"
+            android:summary="显示另一个偏好屏幕">
+
+            <!-- You can place more preferences here that will be shown on the next screen. -->
+            <CheckBoxPreference
+                android:key="next_screen_checkbox_preference"
+                android:title="开关偏好"
+                android:summary="另一个屏幕上的偏好" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="意图偏好1"
+            android:summary="通过意图启动一个Activity">
+            <intent
+                android:targetClass="com.ttt.zhihudaily.activity.FavouriteActivity"
+                android:targetPackage="com.ttt.zhihudaily"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="意图偏好2"
+            android:summary="通过意图启动一个链接">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.baidu.com" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="偏好属性">
+        <CheckBoxPreference
+            android:key="parent_checkbox_preference"
+            android:title="父开关"
+            android:summary="这是一个父开关" />
+        <CheckBoxPreference
+            android:key="child_checkbox_preference1"
+            android:dependency="parent_checkbox_preference"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="子开关1"
+            android:summary="这是一个子开关" />
+        <CheckBoxPreference
+            android:key="child_checkbox_preference2"
+            android:dependency="parent_checkbox_preference"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="子开关2"
+            android:summary="这是一个子开关" />
+    </PreferenceCategory>
 </PreferenceScreen>
