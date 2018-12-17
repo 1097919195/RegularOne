@@ -55,8 +55,8 @@
             android:title="意图偏好1"
             android:summary="通过意图启动一个Activity">
             <intent
-                android:targetClass="com.ttt.zhihudaily.activity.FavouriteActivity"
-                android:targetPackage="com.ttt.zhihudaily"/>
+                android:targetClass="zjl.example.com.regularone.ui.settings.SettingsActivity"
+                android:targetPackage="zjl.example.com.regularone"/>
         </PreferenceScreen>
 
         <PreferenceScreen
