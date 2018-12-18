@@ -12,7 +12,7 @@ import zjl.example.com.regularone.R;
  * @author : zjl
  * 可侧滑退出的Activity
  *
- * 注意完全透明的状态栏跳转和android:fitsSystemWindows属性的关系
+ * 注意透明状态栏和着色状态栏跳转和android:fitsSystemWindows属性的关系，记得要使用同一种statusbar工具
  */
 public abstract class BaseUIActivity extends BaseActivity implements BGASwipeBackHelper.Delegate {
     protected BGASwipeBackHelper mSwipeBackHelper;

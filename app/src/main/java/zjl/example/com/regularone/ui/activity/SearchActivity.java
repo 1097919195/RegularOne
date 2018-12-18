@@ -30,7 +30,7 @@ public class SearchActivity extends BaseUIActivity implements XCollapsingToolbar
     @BindView(R.id.tv_test_search)
     TextView mSearchView;
 
-    private ImmersionBar mImmersionBar;//状态栏沉浸
+    private ImmersionBar mImmersionBar;//状态栏沉浸，默认为透明
 
     @Override
     public int getLayoutId() {
@@ -44,7 +44,7 @@ public class SearchActivity extends BaseUIActivity implements XCollapsingToolbar
 
     @Override
     public void initView() {
-        // 给这个ToolBar设置顶部内边距，才能和TitleBar进行对齐(不使用baseActivity中的沉浸状态栏就是因为没有封装设置距离的方法，只能透明显示，直接全部透明title也会上移android:fitsSystemWindows属性可以配合baseactivity中的试试)
+        // 给这个ToolBar设置顶部内边距，才能和TitleBar进行对齐(不使用baseActivity中的沉浸状态栏就是因为没有封装设置距离的方法，只能透明显示，直接全部透明title也会上移android:fitsSystemWindows属性可以配合baseactivity中的沉浸工具试试)
         ImmersionBar.setTitleBar(this, mToolbar);
         ImmersionBar.setTitleBar(this, mTitleBar);
 
@@ -54,12 +54,14 @@ public class SearchActivity extends BaseUIActivity implements XCollapsingToolbar
         mImmersionBar.init();//注意场所切换时状态需要重新init，参考工程模板的搜索fragment
         initListener();
 
-//        mSwipeBackHelper.setSwipeBackEnable(false);//可以禁止右滑结束界面
+//        mSwipeBackHelper.setSwipeBackEnable(false);//可以禁止右滑
     }
 
     private void initListener() {
         //设置渐变监听
         mCollapsingToolbarLayout.setOnScrimsListener(this);
+
+        mSearchView.setOnClickListener(v -> startActivity(FavoriteActivity.class));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package zjl.example.com.regularone.ui.activity;
 
+import com.gyf.barlibrary.ImmersionBar;
+
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.BaseUIActivity;
 
@@ -16,6 +18,7 @@ public class FavoriteActivity extends BaseUIActivity {
 
     @Override
     public void initView() {
-
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.main_color).init();
     }
 }

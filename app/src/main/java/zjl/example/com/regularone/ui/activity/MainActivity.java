@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.commonutils.ACache;
@@ -118,6 +119,9 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 
     @Override
     public void initView() {
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.main_color).init();//保证使用同一种statusbar工具，防止透明状态栏和着色状态栏之间切换布局移动的问题，因为baseActivity中有另外一种
+
         Beta.checkUpgrade(false,false);//检查更新
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("图片");

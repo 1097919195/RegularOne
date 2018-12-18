@@ -104,8 +104,8 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // 设置横屏
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        // 默认着色状态栏
-        SetStatusBarColor();
+        // 默认着色状态栏(这个RegularOne项目引入了第三方的就不适用这个了)
+//        SetStatusBarColor();
 
     }
     /*********************子类实现*****************************/
