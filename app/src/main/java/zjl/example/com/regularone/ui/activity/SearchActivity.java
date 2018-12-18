@@ -10,12 +10,13 @@ import com.jaydenxiao.common.base.BaseActivity;
 
 import butterknife.BindView;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.app.BaseUIActivity;
 import zjl.example.com.regularone.widget.XCollapsingToolbarLayout;
 
 /**
  * 一般这种形式的作为主界面，点击search后才跳转到EditText的搜索界面
  */
-public class SearchActivity extends BaseActivity implements XCollapsingToolbarLayout.OnScrimsListener {
+public class SearchActivity extends BaseUIActivity implements XCollapsingToolbarLayout.OnScrimsListener {
 
     @BindView(R.id.ctl_test_bar)
     XCollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -52,6 +53,8 @@ public class SearchActivity extends BaseActivity implements XCollapsingToolbarLa
                 .keyboardEnable(true);  //解决软键盘与底部输入框冲突问题，默认为false，还有一个重载方法，可以指定软键盘mode
         mImmersionBar.init();//注意场所切换时状态需要重新init，参考工程模板的搜索fragment
         initListener();
+
+//        mSwipeBackHelper.setSwipeBackEnable(false);//可以禁止右滑结束界面
     }
 
     private void initListener() {

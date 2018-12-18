@@ -290,13 +290,15 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transactionWithPre.hide(settingFragment);
                 break;
             case R.id.nav_menu_favorite:
-                fab.hide();
-                toolbar.setTitle("收藏");
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                transaction.hide(mineFragment);
-                transaction.hide(navigationFragment);
-                transactionWithPre.hide(settingFragment);
+//                fab.hide();
+//                toolbar.setTitle("收藏");
+//                transaction.hide(newsMainFragment);
+//                transaction.hide(aboutFragment);
+//                transaction.hide(mineFragment);
+//                transaction.hide(navigationFragment);
+//                transactionWithPre.hide(settingFragment);
+                Intent favorite = new Intent(this, FavoriteActivity.class);
+                startActivity(favorite);
                 break;
             case R.id.nav_menu_setting:
                 fab.hide();

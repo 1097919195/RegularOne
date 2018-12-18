@@ -9,6 +9,7 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
+import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import zjl.example.com.regularone.BuildConfig;
 
@@ -31,6 +32,13 @@ public class AppApplication extends BaseApplication{
         Beta.autoCheckUpgrade = false;//取消初始化自动更新（在mainActivity中调用更新）
         Bugly.init(getApplicationContext(),"68840e3481",false);//统一处理异常上报和更新
         Bugly.setUserId(this,"Riven,the Exile");
+
+        /**
+         * 必须在 Application 的 onCreate 方法中执行 BGASwipeBackHelper.init 来初始化滑动返回
+         * 第一个参数：应用程序上下文
+         * 第二个参数：如果发现滑动返回后立即触摸界面时应用崩溃，请把该界面里比较特殊的 View 的 class 添加到该集合中，目前在库中已经添加了 WebView 和 SurfaceView
+         */
+        BGASwipeBackHelper.init(this, null);
 
     }
 
