@@ -43,7 +43,7 @@ public class SearchActivity extends BaseActivity implements XCollapsingToolbarLa
 
     @Override
     public void initView() {
-        // 给这个ToolBar设置顶部内边距，才能和TitleBar进行对齐(不使用baseActivity中的沉浸状态栏就是因为没有封装设置距离的方法，只能透明显示，直接全部透明title也会上移)
+        // 给这个ToolBar设置顶部内边距，才能和TitleBar进行对齐(不使用baseActivity中的沉浸状态栏就是因为没有封装设置距离的方法，只能透明显示，直接全部透明title也会上移android:fitsSystemWindows属性可以配合baseactivity中的试试)
         ImmersionBar.setTitleBar(this, mToolbar);
         ImmersionBar.setTitleBar(this, mTitleBar);
 
