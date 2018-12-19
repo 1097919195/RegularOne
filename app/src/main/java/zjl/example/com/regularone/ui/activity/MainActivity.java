@@ -284,14 +284,16 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.nav_menu_station:
-                fab.hide();
-                toolbar.setTitle("媒体");//这块内容到时候也可以切换为图标
-                transaction.hide(newsMainFragment);
-                transaction.hide(aboutFragment);
-                transaction.hide(mineFragment);
-                transaction.hide(navigationFragment);
-                transactionWithPre.hide(settingFragment);
+            case R.id.nav_menu_station://这块内容到时候也可以切换为图标
+//                fab.hide();
+//                toolbar.setTitle("媒体");
+//                transaction.hide(newsMainFragment);
+//                transaction.hide(aboutFragment);
+//                transaction.hide(mineFragment);
+//                transaction.hide(navigationFragment);
+//                transactionWithPre.hide(settingFragment);
+                Intent media = new Intent(this, MediaActivity.class);
+                startActivity(media);
                 break;
             case R.id.nav_menu_favorite:
 //                fab.hide();

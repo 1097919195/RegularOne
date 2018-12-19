@@ -68,6 +68,8 @@
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.activity.FavoriteActivity"
             android:screenOrientation="nosensor"/>
+        <activity android:name=".ui.activity.MediaActivity"
+            android:screenOrientation="nosensor"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

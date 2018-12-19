@@ -36,7 +36,7 @@ public class PreferenceSettingFragment extends PreferenceFragment implements Pre
 
         prefs=PreferenceManager.getDefaultSharedPreferences(getActivity());
         Boolean checkbox=prefs.getBoolean("checkbox_preference",false);
-        Toast.makeText(getActivity(), ""+checkbox, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), ""+checkbox, Toast.LENGTH_SHORT).show();//检测初始化是否调用了PrferenceFragment的属性
 
         CheckBoxPreference cp=(CheckBoxPreference)findPreference("checkbox_preference");
         SwitchPreference sp=(SwitchPreference)findPreference("switch_preference");
