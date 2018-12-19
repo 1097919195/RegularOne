@@ -69,6 +69,7 @@ import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
 import zjl.example.com.regularone.ui.fragment.NavigationFragment;
 import zjl.example.com.regularone.ui.fragment.PreferenceSettingFragment;
+import zjl.example.com.regularone.ui.fragment.VideoFragment;
 import zjl.example.com.regularone.ui.main.contract.MainContract;
 import zjl.example.com.regularone.ui.main.module.MainModule;
 import zjl.example.com.regularone.ui.main.presenter.MainPresenter;
@@ -97,6 +98,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     private static final int REQUEST_PHOTO = 1001;
     private static final int CROP_PICTURE = 2000;
     NewsMainFragment newsMainFragment;
+    VideoFragment videoFragment;
     AboutFragment aboutFragment;
     MineFragment mineFragment;
     NavigationFragment navigationFragment;
@@ -251,6 +253,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 transactionWithPre.hide(settingFragment);
+                transaction.hide(videoFragment);
                 break;
                 //视频专区
             case 1:
@@ -260,6 +263,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 transactionWithPre.hide(settingFragment);
+                transaction.show(videoFragment);
                 break;
                 //文档分类
             case 2:
@@ -269,6 +273,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.show(navigationFragment);
                 transactionWithPre.hide(settingFragment);
+                transaction.hide(videoFragment);
                 break;
                 //我的
             case 3:
@@ -278,6 +283,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.show(mineFragment);
                 transaction.hide(navigationFragment);
                 transactionWithPre.hide(settingFragment);
+                transaction.hide(videoFragment);
                 break;
             case R.id.nav_menu_read:
                 Intent read = new Intent(this, ReadNewsActivity.class);
@@ -310,6 +316,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 transactionWithPre.show(settingFragment);
+                transaction.hide(videoFragment);
                 // TODO: 2018/12/17 0017
                 // 这个偏好fragment好像不会覆盖，所以需要把这里的加载动画隐藏（这里有空最好实现一下整体的封装，这里是简单的添加在了MainActivity中）
                 ivLoadView.setVisibility(View.GONE);
@@ -322,6 +329,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(mineFragment);
                 transaction.hide(navigationFragment);
                 transactionWithPre.hide(settingFragment);
+                transaction.hide(videoFragment);
                 break;
             default:
                 break;
@@ -428,14 +436,17 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     private void initFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         newsMainFragment = new NewsMainFragment();
+        videoFragment = new VideoFragment();
         aboutFragment = new AboutFragment();
         mineFragment = new MineFragment();
         navigationFragment = new NavigationFragment();
         settingFragment = new PreferenceSettingFragment();
         transaction.add(R.id.rl_body, newsMainFragment, "newsMainFragment");
+        transaction.add(R.id.rl_body, videoFragment, "videoFragment");
         transaction.add(R.id.rl_body, aboutFragment, "aboutFragment");
         transaction.add(R.id.rl_body, mineFragment, "mineFragment");
         transaction.add(R.id.rl_body, navigationFragment, "navigationFragment");
+        transaction.hide(videoFragment);
         transaction.hide(aboutFragment);
         transaction.hide(mineFragment);
         transaction.hide(navigationFragment);

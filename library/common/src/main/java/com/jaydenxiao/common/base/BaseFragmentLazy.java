@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.jaydenxiao.common.R;
 import com.jaydenxiao.common.baserx.RxManager;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.TUtil;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 import com.jaydenxiao.common.commonwidget.LoadingDialog;
@@ -84,6 +85,19 @@ public abstract  class BaseFragmentLazy<T extends BasePresenter, E extends BaseM
         return rootView;
     }
 
+    //保证非pagerAdapter也可以进行懒加载
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            isUiVisible = true;
+            lazyLoad();
+        }else{
+            isUiVisible = false;
+        }
+    }
+
+    //pagerAdapter中才有效，即hide，show无效需要在onHiddenChanged判断
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

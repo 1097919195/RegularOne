@@ -59,7 +59,9 @@
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            />
         <activity android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.activity.BrowserActivity"

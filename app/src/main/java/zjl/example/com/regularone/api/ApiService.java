@@ -4,13 +4,16 @@ package zjl.example.com.regularone.api;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import zjl.example.com.regularone.bean.GirlData;
 import zjl.example.com.regularone.bean.HttpResponse;
 import zjl.example.com.regularone.bean.NavCategory;
+import zjl.example.com.regularone.bean.VideoData;
 import zjl.example.com.regularone.bean.WeatherInfo;
 
 /**
@@ -82,6 +85,12 @@ public interface ApiService {
             @Query("key") String key,
             @Query("location") String location
     );
+
+    //干货视频
+    @GET()
+    Observable<VideoData> getVideo(
+//            @Header("Cache-Control") String cacheControl,
+            @Url String photoPath);
 
     /**
      * Test Api
