@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 
         Beta.checkUpgrade(false,false);//检查更新
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("图片");
+        getSupportActionBar().setTitle(R.string.picture);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,10 +243,9 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
         }
         switch (position) {
             //主页兼侧滑的图片分类
-            case R.id.nav_menu_picture:
+//            case R.id.nav_menu_read:
             case 0:
                 fab.show();
-                toolbar.setTitle("图片");
                 transaction.show(newsMainFragment);
                 transaction.hide(aboutFragment);
                 transaction.hide(mineFragment);
@@ -280,18 +279,15 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 transaction.hide(navigationFragment);
                 transactionWithPre.hide(settingFragment);
                 break;
+            case R.id.nav_menu_read:
+                Intent read = new Intent(this, ReadNewsActivity.class);
+                startActivity(read);
+                break;
             case R.id.nav_menu_search:
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_menu_station://这块内容到时候也可以切换为图标
-//                fab.hide();
-//                toolbar.setTitle("媒体");
-//                transaction.hide(newsMainFragment);
-//                transaction.hide(aboutFragment);
-//                transaction.hide(mineFragment);
-//                transaction.hide(navigationFragment);
-//                transactionWithPre.hide(settingFragment);
                 Intent media = new Intent(this, MediaActivity.class);
                 startActivity(media);
                 break;

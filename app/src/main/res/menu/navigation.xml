@@ -3,18 +3,18 @@
     <item
         android:id="@+id/picture"
         android:icon="@drawable/draw_station"
-        android:title="@string/drawer_menu_picture"/>
+        android:title="@string/picture"/>
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_menu_video"
-        android:title="@string/drawer_menu_video"/>
+        android:title="@string/video"/>
 
     <item
         android:id="@+id/navigation"
         android:icon="@drawable/draw_area"
-        android:title="@string/drawer_menu_area"/>
+        android:title="@string/navigation"/>
     <item
         android:id="@+id/mine"
         android:icon="@drawable/ic_menu_mine"
-        android:title="@string/drawer_menu_mine"/>
+        android:title="@string/mine"/>
 </menu>

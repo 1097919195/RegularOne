@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--侧滑菜单-->
-    <item android:title="@string/drawer_menu_read">
+    <item android:title="@string/drawer_menu_sorts">
         <menu>
             <item
-                android:id="@+id/nav_menu_picture"
+                android:id="@+id/nav_menu_read"
                 android:checkable="false"
-                android:icon="@drawable/draw_station"
-                android:title="@string/drawer_menu_picture"/>
+                android:icon="@drawable/ic_menu_read"
+                android:title="@string/drawer_menu_read"/>
             <item
                 android:id="@+id/nav_menu_search"
                 android:checkable="false"

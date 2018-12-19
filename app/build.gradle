@@ -106,4 +106,5 @@ dependencies {
     // 圆形的ImageView：https://github.com/hdodenhof/CircleImageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    implementation 'com.github.moyokoo:Diooto:1.16'
 }

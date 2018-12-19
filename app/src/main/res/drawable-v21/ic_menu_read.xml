@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="1000"
+    android:viewportHeight="1000">
+
+    <path
+        android:fillColor="#2c2c2c"
+        android:pathData="M875 250v-125h-875v687.5c0 34.5313 27.9688 62.5 62.5 62.5h843.75c51.7813 0
+93.75-41.9688 93.75-93.75v-531.25h-125zM812.5 812.5h-750v-625h750v625zM125
+312.5h625v62.5h-625zM500 437.5h250v62.5h-250zM500 562.5h250v62.5h-250zM500
+687.5h187.5v62.5h-187.5zM125 437.5h312.5v312.5h-312.5z" />
+</vector>
