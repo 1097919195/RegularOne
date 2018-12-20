@@ -1,5 +1,6 @@
 package zjl.example.com.regularone.ui.news.fragment;
 
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -121,6 +122,16 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
                 mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
             }
         });
+
+        //修改刷新类型View
+        ProgressLayout headerView = new ProgressLayout(getActivity());
+        headerView.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
+        srfLayout.setHeaderView(headerView);
+        //修改加载类型View
+        LoadingView loadingView = new LoadingView(getActivity());
+//        loadingView.setColorFilter(R.color.colorPrimaryDark);
+//        loadingView.setColorFilter(Color.parseColor("#39C5BB"));//使用上面那种换颜色会错乱
+        srfLayout.setBottomView(loadingView);
     }
 
     private void initAdapter() {
@@ -155,15 +166,6 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
 
         //检测最后一项加载更多
 //        recyclerView.addOnScrollListener(mScrollListener);
-
-        //修改刷新类型View
-        ProgressLayout headerView = new ProgressLayout(getActivity());
-        headerView.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimaryDark);
-        srfLayout.setHeaderView(headerView);
-        //修改加载类型View
-        LoadingView loadingView = new LoadingView(getActivity());
-//        loadingView.setColorFilter(R.color.colorPrimaryDark);
-        srfLayout.setBottomView(loadingView);
     }
 
     @Override

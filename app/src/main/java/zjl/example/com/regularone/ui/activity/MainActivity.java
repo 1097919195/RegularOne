@@ -54,6 +54,7 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.jzvd.Jzvd;
 import io.reactivex.functions.Consumer;
 import util.UpdateAppUtils;
 import zhy.com.highlight.HighLight;
@@ -515,12 +516,22 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
     //该事件会被onKeyDown先执行（所以关闭侧滑事件和判断双击退出需要在onkeyDown里面判断）
     @Override
     public void onBackPressed() {
+        LogUtils.loge("Main--onBackPressed");
+//        if (Jzvd.backPress()) {//因为添加了onKeyDown事件，所以此处无效，添加到onKeyDown事件中判断
+//            return;
+//        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Jzvd.releaseAllVideos();
     }
 
     @Override
@@ -663,6 +674,9 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Jzvd.backPress()) {
+            return false;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

@@ -14,7 +14,7 @@ public class VideoModule implements VideoContract.Model {
     @Override
     public Observable<VideoData> getVideoData() {
         return Api.getDefault(HostType.PHOTO_HOST)
-                .getVideo("https://gank.io/api/random/data/休息视频/10")
+                .getVideo("https://www.apiopen.top/satinApi?type=1&page=1")
                 .compose(RxSchedulers.io_main());
     }
 }
