@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -8,7 +9,8 @@
         android:id="@+id/typeList"
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:background="#ededed">
+        android:background="#ededed"
+        tools:listitem="@layout/item_navigation_type_list">
 
     </android.support.v7.widget.RecyclerView>
     <!--实现列表分组效果  注意这个listview是没有实现嵌套滑动的所以底部导航栏不会跟随它隐藏显示-->
@@ -20,5 +22,6 @@
         android:overScrollMode="never">
 
     </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
+
 </LinearLayout>
 

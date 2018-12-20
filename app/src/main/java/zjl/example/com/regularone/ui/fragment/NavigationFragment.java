@@ -55,6 +55,7 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
     protected void initView() {
         //todo 需要判断一下如果还没加载成功就不显示底层的视图
         mPresenter.getNavigationDataRequest();
+//        typeListView.setNestedScrollingEnabled(false);//阻止嵌套滑动，即失去与底部导航的关系
     }
 
     //双联动内容加载显示

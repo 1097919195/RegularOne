@@ -65,6 +65,8 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
         preDialogLoading();
         initSwipRefresh();
         initVideoAdapter();
+//        srfLayout.setNestedScrollingEnabled(false);
+        recyclerView.setNestedScrollingEnabled(false);//保证了没有数据的时候上下滑动与底部导航栏显示隐藏的问题
     }
 
     private void preDialogLoading() {
