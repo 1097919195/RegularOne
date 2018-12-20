@@ -1,10 +1,12 @@
 package zjl.example.com.regularone.ui.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.github.library.BaseRecyclerAdapter;
 import com.github.library.BaseViewHolder;
@@ -42,9 +44,9 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
     List<VideoData.DataBean> videoDataList = new ArrayList<>();
     BaseRecyclerAdapter<VideoData.DataBean> adapter;
 
+    ImageView imageView;
     @Override
     protected void lazyLoadData() {
-        container.setVisibility(View.GONE);
         mPresenter.getVideoDataRequest(mStartPage);//这个接口0会返回随机的一页数据，所以要>=1才返回指定的页，一页默认20条数据
     }
 
@@ -60,8 +62,15 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
 
     @Override
     protected void initView() {
+        preDialogLoading();
         initSwipRefresh();
         initVideoAdapter();
+    }
+
+    private void preDialogLoading() {
+        imageView = (ImageView) rootView.findViewById(R.id.ivLoadView);
+        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
     }
 
     private void initSwipRefresh() {
@@ -70,7 +79,6 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
                 mStartPage = 1;
-                adapter.getData().removeAll(videoDataList);//刷新数据的时候记得把之前的数据清空
                 mPresenter.getVideoDataRequest(mStartPage);
             }
 
@@ -111,10 +119,15 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
 
     @Override
     public void returnVideoData(VideoData videoData) {
-        container.setVisibility(View.VISIBLE);
+        imageView.setVisibility(View.INVISIBLE);
+        //区别加载和刷新，防止出现界面抖动
+        if (mStartPage == 1) {
+            srfLayout.finishRefreshing();
+            adapter.getData().removeAll(videoDataList);//刷新数据的时候记得把之前的数据清空
+        }else {
+            srfLayout.finishLoadmore();
+        }
 
-        srfLayout.finishRefreshing();
-        srfLayout.finishLoadmore();
         if (videoData != null) {
             mStartPage += 1;
             adapter.getData().addAll(videoData.getData());
@@ -139,8 +152,11 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
 
     @Override
     public void showErrorTip(String msg) {
-        srfLayout.finishRefreshing();
-        srfLayout.finishLoadmore();
+        if (mStartPage == 1) {
+            srfLayout.finishRefreshing();
+        }else {
+            srfLayout.finishLoadmore();
+        }
         ToastUtil.showShort(msg);
     }
 }

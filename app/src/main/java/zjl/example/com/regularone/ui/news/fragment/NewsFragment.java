@@ -113,7 +113,6 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
                 mStartPage = 1;
-                adapter.getData().removeAll(photoGirlList);//刷新数据的时候记得把之前的数据清空（假如此时出现了请求错误，之前的数据也还会显示在列表上，因为没有notify）
                 mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
             }
 
@@ -173,8 +172,13 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     public void returnPhotosListData(List<PhotoGirl> photoGirls) {
 //        srfLayout.setRefreshing(false);
         imageView.setVisibility(View.INVISIBLE);
-        srfLayout.finishRefreshing();
-        srfLayout.finishLoadmore();
+        //区别加载和刷新，防止出现界面抖动
+        if (mStartPage == 1) {
+            srfLayout.finishRefreshing();
+            adapter.getData().removeAll(photoGirlList);//刷新数据的时候记得把之前的数据清空
+        }else {
+            srfLayout.finishLoadmore();
+        }
         if (photoGirls != null) {
             mStartPage += 1;
 
@@ -201,8 +205,11 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     @Override
     public void showErrorTip(String msg) {
 //        srfLayout.setRefreshing(false);
-        srfLayout.finishRefreshing();
-        srfLayout.finishLoadmore();
+        if (mStartPage == 1) {
+            srfLayout.finishRefreshing();
+        }else {
+            srfLayout.finishLoadmore();
+        }
     }
 
 
