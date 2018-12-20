@@ -44,7 +44,7 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
 //    @BindView(R.id.srfLayout)
 //    SwipeRefreshLayout srfLayout;
     private static int SIZE = 10;
-    private int mStartPage = 0;
+    private int mStartPage = 1;//该请求是从页码1开始的
     List<PhotoGirl> photoGirlList = new ArrayList<>();
     BaseRecyclerAdapter<PhotoGirl> adapter;
 
@@ -55,7 +55,7 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
     protected void lazyLoadData() {
         //加载初始化数据的时候，数据为空才重新发起请求(防止切回fragment调用该方法进行加载)
         if (adapter.getData().size()<=0){
-            mStartPage = 0;
+            mStartPage = 1;
             mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
         }
     }
@@ -112,7 +112,8 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
-                mStartPage = 0;
+                mStartPage = 1;
+                adapter.getData().removeAll(photoGirlList);//刷新数据的时候记得把之前的数据清空（假如此时出现了请求错误，之前的数据也还会显示在列表上，因为没有notify）
                 mPresenter.getPhotosListDataRequest(SIZE, mStartPage);
             }
 

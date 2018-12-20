@@ -9,13 +9,13 @@ import zjl.example.com.regularone.bean.VideoData;
 
 public interface VideoContract {
     interface Model extends BaseModel {
-        Observable<VideoData> getVideoData();
+        Observable<VideoData> getVideoData(int page);
     }
 
     interface View extends BaseView {
         void returnVideoData(VideoData videoData);
     }
     abstract class Presenter extends BasePresenter<View, Model> {
-        public abstract void getVideoDataRequest();
+        public abstract void getVideoDataRequest(int page);
     }
 }

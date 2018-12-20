@@ -38,14 +38,14 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
     TwinklingRefreshLayout srfLayout;
 
     private static int SIZE = 10;
-    private int mStartPage = 0;
+    private int mStartPage = 1;
     List<VideoData.DataBean> videoDataList = new ArrayList<>();
     BaseRecyclerAdapter<VideoData.DataBean> adapter;
 
     @Override
     protected void lazyLoadData() {
         container.setVisibility(View.GONE);
-        mPresenter.getVideoDataRequest();
+        mPresenter.getVideoDataRequest(mStartPage);//这个接口0会返回随机的一页数据，所以要>=1才返回指定的页，一页默认20条数据
     }
 
     @Override
@@ -69,14 +69,15 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
-                mStartPage = 0;
-                mPresenter.getVideoDataRequest();
+                mStartPage = 1;
+                adapter.getData().removeAll(videoDataList);//刷新数据的时候记得把之前的数据清空
+                mPresenter.getVideoDataRequest(mStartPage);
             }
 
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
                 super.onLoadMore(refreshLayout);
-                mPresenter.getVideoDataRequest();
+                mPresenter.getVideoDataRequest(mStartPage);
             }
         });
 
@@ -103,6 +104,7 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
 //                jzvdStd.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
             }
         };
+        adapter.openLoadAnimation(false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
