@@ -108,4 +108,5 @@ dependencies {
 
     implementation 'com.github.moyokoo:Diooto:1.16'//图库
     implementation 'cn.jzvd:jiaozivideoplayer:6.4.1'//视频播放器
+    implementation 'com.danikula:videocache:2.7.0'
 }

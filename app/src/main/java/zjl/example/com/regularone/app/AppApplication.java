@@ -1,5 +1,8 @@
 package zjl.example.com.regularone.app;
 
+import android.content.Context;
+
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.liulishuo.filedownloader.FileDownloader;
@@ -8,6 +11,8 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
+
+import java.util.LinkedHashMap;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -49,4 +54,18 @@ public class AppApplication extends BaseApplication{
     private void setRxJavaErrorHandler() {
         RxJavaPlugins.setErrorHandler(throwable -> LogUtils.loge("throw test RxJava2===="+throwable.getMessage()));
     }
+
+
+    private HttpProxyCacheServer proxy;
+
+    public static HttpProxyCacheServer getProxy(Context context) {
+        AppApplication app = (AppApplication) context.getApplicationContext();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer(this);
+    }
 }
+
+

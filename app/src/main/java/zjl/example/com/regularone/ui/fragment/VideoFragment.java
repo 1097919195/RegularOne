@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.github.library.BaseRecyclerAdapter;
 import com.github.library.BaseViewHolder;
 import com.jaydenxiao.common.base.BaseFragmentLazy;
@@ -19,13 +20,17 @@ import com.lcodecore.tkrefreshlayout.footer.LoadingView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.jzvd.JZDataSource;
 import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
 import zjl.example.com.regularone.R;
+import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.bean.VideoData;
+import zjl.example.com.regularone.ui.video.VideoConstant;
 import zjl.example.com.regularone.ui.video.contract.VideoContract;
 import zjl.example.com.regularone.ui.video.module.VideoModule;
 import zjl.example.com.regularone.ui.video.presenter.VideoPresenter;
@@ -107,8 +112,23 @@ public class VideoFragment extends BaseFragmentLazy<VideoPresenter, VideoModule>
             protected void convert(BaseViewHolder helper, VideoData.DataBean item) {
                 JzvdStd jzvdStd = helper.getView(R.id.videoplayer);
 
+                //支持线路切换（就是准备多套不同清晰度的视频）
+//                LinkedHashMap map = new LinkedHashMap();
+//                String proxyUrl = AppApplication.getProxy(getActivity()).getProxyUrl(VideoConstant.videoUrls[0][9]);
+//                map.put("高清", proxyUrl);
+//                map.put("标清", VideoConstant.videoUrls[0][6]);
+//                map.put("普清", VideoConstant.videoUrlList[0]);
+//                JZDataSource jzDataSource = new JZDataSource(map, item.getText());
+//                jzDataSource.looping = true;
+//                jzDataSource.currentUrlIndex = 2;
+//                jzDataSource.headerMap.put("key", "value");//header
+//                jzvdStd.setUp(jzDataSource, JzvdStd.SCREEN_WINDOW_NORMAL);
+//                Glide.with(getActivity()).load(VideoConstant.videoThumbList[0]).into(jzvdStd.thumbImageView);
+
+                //无线路切换
                 jzvdStd.setUp(item.getVideouri(), item.getText(), Jzvd.SCREEN_WINDOW_NORMAL);
                 ImageLoaderUtils.displaySmallPhoto(getContext(),jzvdStd.thumbImageView,item.getBimageuri());
+                //案列
 //                jzvdStd.setUp("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
 //                        , "饺子闭眼睛", Jzvd.SCREEN_WINDOW_NORMAL);
 //                jzvdStd.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
