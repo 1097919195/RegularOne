@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/black"/>
+    <!--flexWarp 换行方向 wrap正常换行-->
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/flex_box"
         android:layout_width="match_parent"

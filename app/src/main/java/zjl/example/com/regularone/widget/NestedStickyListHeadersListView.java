@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
- *
+ *该方法在适配器中没使用FlexboxLayout添加textview的时候不可以，底部会出现很多白色，可能是引用不当的问题
  */
 public class NestedStickyListHeadersListView extends StickyListHeadersListView {
     public NestedStickyListHeadersListView(Context context, AttributeSet attrs) {

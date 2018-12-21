@@ -55,7 +55,7 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
     protected void initView() {
         //todo 需要判断一下如果还没加载成功就不显示底层的视图
         mPresenter.getNavigationDataRequest();
-//        typeListView.setNestedScrollingEnabled(false);//阻止嵌套滑动，即失去与底部导航的关系
+        typeListView.setNestedScrollingEnabled(false);//阻止嵌套滑动，即失去与底部导航的关系
     }
 
     //双联动内容加载显示
@@ -160,11 +160,11 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
             });
 
             //这里使用onTouch事件来判断更好（根据OnScroll监听item滑动的距离还是没有那么精确，万一item较高就会有问题）
-            //注意这里的显示隐藏底部导航和嵌套滑动监听的状态显示问题还需要兼容的（使用的话把下面的注释取消就好了）
-            contentListView.setOnTouchListener(new View.OnTouchListener() {
-                float firstY = 0;
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
+            //注意这里的显示隐藏底部导航和嵌套滑动监听的状态显示还需要兼容的,如果二个都用Touch监听的话在有子控件的部分会有问题--拦截机制的关系·闪烁（使用的话把下面的注释取消就好了）
+//            contentListView.setOnTouchListener(new View.OnTouchListener() {
+//                float firstY = 0;
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
 //                        switch (event.getAction()){
 //                            case MotionEvent.ACTION_DOWN:
 //                                firstY=event.getY();
@@ -183,11 +183,38 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter, Naviga
 //                                }
 //                                break;
 //                        }
-                    return false;
-                }
-            });
+//                    return false;
+//                }
+//            });
+//            typeListView.setOnTouchListener(new View.OnTouchListener() {
+//                float firstY = 0;
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    switch (event.getAction()){
+//                        case MotionEvent.ACTION_DOWN:
+//                            firstY=event.getY();
+//                            break;
+//                        case MotionEvent.ACTION_MOVE:
+//                            float moveY = event.getY();
+//                            Log.e("moveY_START",moveY+"");
+//                            //往上滑动值会变小
+//                            if(moveY < firstY-50){
+//                                RxBus2.getInstance().post(AppConstant.MENU_SHOW_HIDE,false);
+//                                firstY = moveY;//事件触发之后及时记录位置方便下次判断
+//                            }
+//                            if (moveY > firstY+50){
+//                                RxBus2.getInstance().post(AppConstant.MENU_SHOW_HIDE,true);
+//                                firstY = moveY;
+//                            }
+//                            break;
+//                    }
+//                    return false;
+//                }
+//            });
         }
     }
+
+
 
 
     @Override
