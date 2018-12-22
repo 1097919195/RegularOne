@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--设置56dp关闭recycler的嵌套滑动取消与底部导航的关联-->
+<!--可以设置56dp关闭recycler的嵌套滑动取消与底部导航的关联，但当底部导航显示一半的时候展示有问题-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginBottom="56dp">
+    android:orientation="horizontal">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/typeList"

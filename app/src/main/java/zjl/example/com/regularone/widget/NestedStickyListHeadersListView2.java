@@ -1,7 +1,11 @@
 package zjl.example.com.regularone.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChild2;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
@@ -17,169 +21,143 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  *
  */
-public class NestedStickyListHeadersListView2 extends StickyListHeadersListView implements NestedScrollingChild2 {
+public class NestedStickyListHeadersListView2 extends StickyListHeadersListView implements NestedScrollingChild {
 
-    private static final String TAG = NestedStickyListHeadersListView2.class.getSimpleName();
-
-
-    private final int[] mScrollConsumed = new int[2];
-    private final int[] mScrollOffset = new int[2];
-
-    private int mLastMotionY;
-
-    private VelocityTracker mVelocityTracker;
-    private int mMinimumVelocity;
-    private int mMaximumVelocity;
-    private OverScroller mScroller;
-    private int mLastScrollerY;
-
-
-    private final NestedScrollingChildHelper mChildHelper;
+    private NestedScrollingChildHelper mChildHelper;
+    private int[] mNestedOffsets = new int[2];
+    private int[] mScrollConsumed = new int[2];
+    private int[] mScrollOffset = new int[2];
+    private int mScrollPointerId;
+    private int mLastTouchX;
+    private int mLastTouchY;
+    private final static String TAG = "NestedListView";
 
     public NestedStickyListHeadersListView2(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public NestedStickyListHeadersListView2(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public NestedStickyListHeadersListView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
         mChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
-
-        mScroller = new OverScroller(getContext());
-
-        final ViewConfiguration configuration = ViewConfiguration.get(getContext());
-        mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
-        mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
-    }
-
-    private void initVelocityTrackerIfNotExists() {
-        if (mVelocityTracker == null) {
-            mVelocityTracker = VelocityTracker.obtain();
-        }
-    }
-
-    private void recycleVelocityTracker() {
-        if (mVelocityTracker != null) {
-            mVelocityTracker.recycle();
-            mVelocityTracker = null;
-        }
-    }
-
-    public void fling(int velocityY) {
-        startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
-        mScroller.fling(getScrollX(), getScrollY(), // start
-                0, velocityY, // velocities
-                0, 0, // x
-                Integer.MIN_VALUE, Integer.MAX_VALUE, // y
-                0, 0); // overscroll
-        mLastScrollerY = getScrollY();
-        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     @Override
-    public void computeScroll() {
-        super.computeScroll();
-        if (mScroller.computeScrollOffset()) {
-            final int x = mScroller.getCurrX();
-            final int y = mScroller.getCurrY();
-            Log.d(TAG, "computeScroll: y : " + y);
-            int dy = y - mLastScrollerY;
-            if (dy != 0) {
-                int scrollY = getScrollY();
-                int dyUnConsumed = 0;
-                int consumedY = dy;
-                if (scrollY == 0) {
-                    dyUnConsumed = dy;
-                    consumedY = 0;
-                } else if (scrollY + dy < 0) {
-                    dyUnConsumed = dy + scrollY;
-                    consumedY = -scrollY;
-                }
-
-                if (!dispatchNestedScroll(0, consumedY, 0, dyUnConsumed, null,
-                        ViewCompat.TYPE_NON_TOUCH)) {
-
-                }
-            }
-
-            // Finally update the scroll positions and post an invalidation
-            mLastScrollerY = y;
-            ViewCompat.postInvalidateOnAnimation(this);
-        } else {
-            // We can't scroll any more, so stop any indirect scrolling
-            if (hasNestedScrollingParent(ViewCompat.TYPE_NON_TOUCH)) {
-                stopNestedScroll(ViewCompat.TYPE_NON_TOUCH);
-            }
-            // and reset the scroller y
-            mLastScrollerY = 0;
-        }
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    private boolean isFirst = true;//DOWN事件没执行暂时
+    private int lastDy;//暂时解决第一次MOVE与后序符号相反，导致的抖动问题
+
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        initVelocityTrackerIfNotExists();
+    public boolean onTouchEvent(MotionEvent e) {
+        //下述代码主要复制于RecyclerView
+        final MotionEvent vtev = MotionEvent.obtain(e);
+        final int action = MotionEventCompat.getActionMasked(e);
+        final int actionIndex = MotionEventCompat.getActionIndex(e);
+        if (action == MotionEvent.ACTION_DOWN) {
+            mNestedOffsets[0] = mNestedOffsets[1] = 0;
+        }
+        vtev.offsetLocation(mNestedOffsets[0], mNestedOffsets[1]);
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                //不知道为啥没有执行
+                resetScroll(e);
+            }
+            break;
 
-        MotionEvent vtev = MotionEvent.obtain(event);
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                mScrollPointerId = MotionEventCompat.getPointerId(e, actionIndex);
+                mLastTouchX = (int) (MotionEventCompat.getX(e, actionIndex) + 0.5f);
+                mLastTouchY = (int) (MotionEventCompat.getY(e, actionIndex) + 0.5f);
+            }
+            break;
 
-        final int actionMasked = event.getAction();
-
-        switch (actionMasked) {
-            case MotionEvent.ACTION_DOWN:
-                mLastMotionY = (int) event.getRawY();
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
-                mVelocityTracker.addMovement(vtev);
-                mScroller.computeScrollOffset();
-                if (!mScroller.isFinished()) {
-                    mScroller.abortAnimation();
+            case MotionEvent.ACTION_MOVE: {
+                final int index = MotionEventCompat.findPointerIndex(e, mScrollPointerId);
+                if (index < 0) {
+                    Log.e(TAG, "Error processing scroll; pointer index for id " +
+                            mScrollPointerId + " not found. Did any MotionEvents get skipped?");
+                    return false;
                 }
-                break;
-            case MotionEvent.ACTION_UP:
-                final VelocityTracker velocityTracker = mVelocityTracker;
-                velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-                int initialVelocity = (int) velocityTracker.getYVelocity();
-                if (Math.abs(initialVelocity) > mMinimumVelocity) {
-                    fling(-initialVelocity);
+
+                final int x = (int) (MotionEventCompat.getX(e, index) + 0.5f);
+                final int y = (int) (MotionEventCompat.getY(e, index) + 0.5f);
+                int dx = mLastTouchX - x;
+                int dy = mLastTouchY - y;
+                if (isFirst) {//暂时解决第次dy与后序符号相反导致的闪动问题
+                    Log.i("pyt", "FIRST");
+                    isFirst = false;
+                    resetScroll(e);
+                    return true;
                 }
-            case MotionEvent.ACTION_CANCEL:
+                if (!isSignOpposite(lastDy, dy)) {//解决手机触摸在屏幕上不松开一直抖动的问题
+                    lastDy = dy;
+                    Log.i("pyt", "move lastY" + mLastTouchY + ",y=" + y + ",dy=" + dy);
+                    if (dispatchNestedPreScroll(dx, dy, mScrollConsumed, mScrollOffset)) {
+                        vtev.offsetLocation(mScrollOffset[0], mScrollOffset[1]);
+                        // Updated the nested offsets
+                        mNestedOffsets[0] += mScrollOffset[0];
+                        mNestedOffsets[1] += mScrollOffset[1];
+                    }
+                    mLastTouchX = x - mScrollOffset[0];
+                    mLastTouchY = y - mScrollOffset[1];
+                }
+            }
+            break;
+            case MotionEvent.ACTION_UP: {
                 stopNestedScroll();
-                recycleVelocityTracker();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                final int y = (int) event.getRawY();
-                int deltaY = mLastMotionY - y;
-                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
-                    Log.d(TAG, "onTouchEvent: deltaY : " + deltaY + " , mScrollConsumedY : " + mScrollConsumed[1] + " , mScrollOffset : " + mScrollOffset[1]);
-                    vtev.offsetLocation(0, mScrollConsumed[1]);
-                }
-                mLastMotionY = y;
+//                resetTouch();
+                isFirst = true;
+            }
+            break;
 
-                int scrollY = getScrollY();
-
-                int dyUnconsumed = 0;
-                if (scrollY == 0) {
-                    dyUnconsumed = deltaY;
-                } else if (scrollY + deltaY < 0) {
-                    dyUnconsumed = deltaY + scrollY;
-                    vtev.offsetLocation(0, -dyUnconsumed);
-                }
-                mVelocityTracker.addMovement(vtev);
-                boolean result = super.onTouchEvent(vtev);
-                if (dispatchNestedScroll(0, deltaY - dyUnconsumed, 0, dyUnconsumed, mScrollOffset)) {
-
-                }
-                return result;
-            default:
-
-                break;
+            case MotionEvent.ACTION_CANCEL: {
+//                cancelTouch();
+            }
+            break;
         }
-        return super.onTouchEvent(vtev);
+        super.onTouchEvent(e);
+        return true;
     }
 
-    // NestedScrollingChild
+    private void resetScroll(MotionEvent e) {
+        lastDy = 0;
+        mNestedOffsets[0] = mNestedOffsets[1] = 0;
+        mScrollPointerId = MotionEventCompat.getPointerId(e, 0);
+        mLastTouchX = (int) (e.getX() + 0.5f);
+        mLastTouchY = (int) (e.getY() + 0.5f);
+        int nestedScrollAxis = ViewCompat.SCROLL_AXIS_NONE;
+        nestedScrollAxis |= ViewCompat.SCROLL_AXIS_VERTICAL;
+        startNestedScroll(nestedScrollAxis);
+    }
+
+    /**
+     * 判断符号是否相反，可以改成异或
+     *
+     * @param f
+     * @param s
+     * @return
+     */
+    private boolean isSignOpposite(int f, int s) {
+        if (f > 0 && s < 0 || f < 0 && s > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    //以下为接口实现--------------------------------------------------
 
     @Override
     public void setNestedScrollingEnabled(boolean enabled) {
@@ -197,18 +175,8 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
     }
 
     @Override
-    public boolean startNestedScroll(int axes, int type) {
-        return mChildHelper.startNestedScroll(axes, type);
-    }
-
-    @Override
     public void stopNestedScroll() {
         mChildHelper.stopNestedScroll();
-    }
-
-    @Override
-    public void stopNestedScroll(int type) {
-        mChildHelper.stopNestedScroll(type);
     }
 
     @Override
@@ -217,33 +185,13 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
     }
 
     @Override
-    public boolean hasNestedScrollingParent(int type) {
-        return mChildHelper.hasNestedScrollingParent(type);
-    }
-
-    @Override
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-                                        int dyUnconsumed, int[] offsetInWindow) {
-        return mChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
-                offsetInWindow);
-    }
-
-    @Override
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed,
-                                        int dyUnconsumed, int[] offsetInWindow, int type) {
-        return mChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
-                offsetInWindow, type);
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
+        return mChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
     }
 
     @Override
     public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
         return mChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
-    }
-
-    @Override
-    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow,
-                                           int type) {
-        return mChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type);
     }
 
     @Override
@@ -255,5 +203,5 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
     public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
-
 }
+
