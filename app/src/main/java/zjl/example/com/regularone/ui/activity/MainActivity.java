@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 //        navigationView.setCheckedItem(R.id.nav_menu_picture);//设置菜单默认选中项(暂时取消了选中的功能)
         initPersonPhoto();
         initListener();
-        initHighLight();
+//        initHighLight();//第一次的高亮引导
         initBottomNavigation();
         initRxBusListener();
     }
