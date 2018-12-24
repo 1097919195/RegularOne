@@ -14,15 +14,15 @@
         tools:listitem="@layout/item_navigation_type_list">
 
     </android.support.v7.widget.RecyclerView>
-    <!--实现列表分组效果  注意这个listview是没有实现嵌套滑动的所以底部导航栏不会跟随它隐藏显示,外边套一个嵌套滑动的话好像又有点问题-->
-    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
+    <!--实现列表分组效果  注意这个listview是没有实现嵌套滑动的所以底部导航栏不会跟随它隐藏显示,外边套一个嵌套滑动的话好像又有点问题；最后通过自定义实现了效果，用嵌套、ontouch都有点小问题-->
+    <zjl.example.com.regularone.widget.NestedStickyListHeadersListView2
         android:id="@+id/contentList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
         android:overScrollMode="never">
 
-    </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
+    </zjl.example.com.regularone.widget.NestedStickyListHeadersListView2>
 
 </LinearLayout>
 

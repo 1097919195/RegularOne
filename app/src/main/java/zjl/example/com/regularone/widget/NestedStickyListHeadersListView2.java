@@ -16,10 +16,12 @@ import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.OverScroller;
 
+import com.jaydenxiao.common.commonutils.LogUtils;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
- *
+ *基于 https://blog.csdn.net/industriously/article/details/70337940
  */
 public class NestedStickyListHeadersListView2 extends StickyListHeadersListView implements NestedScrollingChild {
 
@@ -50,6 +52,13 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
     private void init() {
         mChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
+    }
+
+    //这个地方的事件不知道被哪里调用了，需要拦截过来才能实现效果
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -113,6 +122,8 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
                     }
                     mLastTouchX = x - mScrollOffset[0];
                     mLastTouchY = y - mScrollOffset[1];
+
+                    resetScroll(e);//这里关联底部导航使用不需要考虑什么抖动不抖动，一致使用就好了
                 }
             }
             break;
@@ -203,5 +214,7 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
     public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
         return mChildHelper.dispatchNestedPreFling(velocityX, velocityY);
     }
+
 }
+
 
