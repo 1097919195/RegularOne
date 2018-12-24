@@ -54,7 +54,7 @@ public class NestedStickyListHeadersListView2 extends StickyListHeadersListView 
         setNestedScrollingEnabled(true);
     }
 
-    //这个地方的事件不知道被哪里调用了，需要拦截过来才能实现效果
+    //因为在协调布局中，使用了behavior的话好像事件都会被它拦截了，所以这个地方需要拦截过来才能调用onTouchEvent
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         onTouchEvent(ev);
