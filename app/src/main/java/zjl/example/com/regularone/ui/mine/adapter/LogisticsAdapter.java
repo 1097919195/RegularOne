@@ -28,7 +28,7 @@ public class LogisticsAdapter extends BaseRecyclerAdapter<LogisticsData.DataBean
         this.datas = datas;
     }
 
-    //获取TimeLineView的类型（对应initLine）
+    //需要获取TimeLineView的类型才能对具体的头尾啥的进行操作（对应initLine）
     @Override
     public int getItemViewType(int position) {
         return TimelineView.getTimeLineViewType(position, getItemCount());
