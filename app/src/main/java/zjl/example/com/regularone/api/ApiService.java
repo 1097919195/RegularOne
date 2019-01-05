@@ -12,7 +12,9 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 import zjl.example.com.regularone.bean.GirlData;
 import zjl.example.com.regularone.bean.HttpResponse;
+import zjl.example.com.regularone.bean.LogisticsData;
 import zjl.example.com.regularone.bean.NavCategory;
+import zjl.example.com.regularone.bean.StatisticsData;
 import zjl.example.com.regularone.bean.VideoData;
 import zjl.example.com.regularone.bean.WeatherInfo;
 
@@ -94,9 +96,16 @@ public interface ApiService {
 
     //统计信息接口：https://www.apiopen.top/findStatistics?appKey=00d91e8e0cca2b76f515926a36db68f5
     //增加统计信息接口：https://www.apiopen.top/addStatistics?appKey=00d91e8e0cca2b76f515926a36db68f5&type=%E7%82%B9%E5%87%BB%E7%BB%9F%E8%AE%A1&typeId=1&count=2
+    @GET()
+    Observable<StatisticsData> getStatistics(
+            @Url String path);
 
     //物流查询接口：http://www.kuaidi100.com/query?type={TYPE}&postid={CODE}
     //demo：http://www.kuaidi100.com/query?type=yunda&postid=3101775486667
+    @GET()
+    Observable<LogisticsData> getLogistics(
+            @Url String path);
+
 
     /**
      * Test Api

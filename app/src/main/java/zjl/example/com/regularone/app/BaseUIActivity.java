@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.base.BaseModel;
+import com.jaydenxiao.common.base.BasePresenter;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import zjl.example.com.regularone.R;
@@ -14,7 +16,8 @@ import zjl.example.com.regularone.R;
  *
  * 注意透明状态栏和着色状态栏跳转和android:fitsSystemWindows属性的关系，记得要使用同一种statusbar工具
  */
-public abstract class BaseUIActivity extends BaseActivity implements BGASwipeBackHelper.Delegate {
+//这里注意BaseAcitivty中的MVP模式的泛型类继承关系（泛型其实无法继承/实现，因为在实现/继承的时候必须为泛型传入类型实参，给定实参后它就是一个具体的类型了，就不再是泛型了）
+public abstract class BaseUIActivity<T extends BasePresenter, E extends BaseModel> extends BaseActivity<T, E> implements BGASwipeBackHelper.Delegate {
     protected BGASwipeBackHelper mSwipeBackHelper;
 
     @Override
