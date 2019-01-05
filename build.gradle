@@ -18,6 +18,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+//        jcenter(){url 'http://jcenter.bintray.com/'}//解决国内下载慢的问题,或者设置代理
         jcenter()
         maven { url 'https://jitpack.io' }
     }

@@ -110,4 +110,6 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.4.1'//视频播放器
     implementation 'com.danikula:videocache:2.7.0'
     compile 'com.github.jaychou2012:SwitchLayout:1.0.0.0'//界面跳转动画
+    implementation 'com.github.vipulasri:timelineview:1.1.0'//时间轴
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'//统计图
 }
