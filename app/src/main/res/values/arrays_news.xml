@@ -24,4 +24,12 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="company">
+        <item>韵达</item>
+        <item>顺丰</item>
+        <item>圆通</item>
+        <item>申通</item>
+        <item>中通</item>
+    </string-array>
+
 </resources>

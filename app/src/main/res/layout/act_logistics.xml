@@ -1,57 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
-        android:paddingTop="15dp"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@color/gray"
         android:orientation="horizontal"
-        android:background="@color/gray">
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp">
 
         <TextView
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="公司简称："/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/logistics_search"
-            android:hint="需输入拼音--即韵达快递输入yunda"
-            android:singleLine="true"
             android:gravity="center"
-            android:textSize="14sp"
-            />
+            android:text="公司简称："
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/logistics_search"-->
+            <!--android:cursorVisible="false"-->
+            <!--android:focusable="false"-->
+            <!--android:gravity="center"-->
+            <!--android:hint="需输入拼音&#45;&#45;即韵达快递输入yunda"-->
+            <!--android:singleLine="true"-->
+            <!--android:textSize="14sp"-->
+            <!--android:textColor="@color/black"/>-->
+        <Spinner
+            android:id="@+id/company_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:entries="@array/company">
+
+        </Spinner>
+
+        <!--<Spinner-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:id="@+id/card_type"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:spinnerMode="dropdown"-->
+        <!--android:background="@null">-->
+        <!--</Spinner>-->
     </LinearLayout>
 
+    <!--父控件添加下列代码也可以不获取焦点-->
+    <!--android:focusable="true"-->
+    <!--android:focusableInTouchMode="true"-->
     <LinearLayout
-        android:paddingTop="15dp"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingBottom="15dp"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@color/gray"
         android:orientation="horizontal"
-        android:background="@color/gray">
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
         <TextView
-            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="快递单号："/>
+            android:gravity="center"
+            android:text="快递单号："
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
         <EditText
+            android:id="@+id/express_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/logistics_search"
-            android:singleLine="true"
             android:gravity="center"
+            android:imeOptions="actionSearch"
+            android:inputType="number"
+            android:singleLine="true"
             android:textSize="14sp"
-            />
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

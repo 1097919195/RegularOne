@@ -75,7 +75,8 @@
         <activity android:name=".ui.activity.ReadNewsActivity"
             android:screenOrientation="nosensor"/>
         <activity android:name=".ui.mine.activity.LogisticsActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".ui.mine.activity.StatisticsActivity"
             android:screenOrientation="nosensor"/>
 
