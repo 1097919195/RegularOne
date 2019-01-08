@@ -1,10 +1,13 @@
 package zjl.example.com.regularone.ui.mine.activity;
 
 import android.graphics.Color;
+import android.graphics.RectF;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -16,6 +19,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 
@@ -30,8 +38,10 @@ import zjl.example.com.regularone.ui.mine.contract.StatisticsContract;
 import zjl.example.com.regularone.ui.mine.model.StatisticsModel;
 import zjl.example.com.regularone.ui.mine.presenter.StatisticsPresenter;
 import zjl.example.com.regularone.utils.DayAxisValueFormatter;
+import zjl.example.com.regularone.utils.ValueFormatter;
+import zjl.example.com.regularone.utils.XYMarkerView;
 
-public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, StatisticsModel>  implements StatisticsContract.View{
+public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, StatisticsModel>  implements StatisticsContract.View, OnChartValueSelectedListener {
 
     @BindView(R.id.chart)
     BarChart chart;
@@ -59,7 +69,7 @@ public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, Stat
 
     private void initCombinedChart() {
         chart1.getDescription().setEnabled(false);
-        chart1.setBackgroundColor(Color.WHITE);
+//        chart1.setBackgroundColor(Color.GRAY);
         chart1.setDrawGridBackground(false);
         chart1.setDrawBarShadow(false);
         chart1.setHighlightFullBarEnabled(false);
@@ -106,6 +116,7 @@ public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, Stat
 
         xAxis1.setAxisMaximum(data1.getXMax() + 0.25f);
 
+//        chart1.getAxisRight().setEnabled(false);
         chart1.setData(data1);
         chart1.invalidate();
     }
@@ -118,14 +129,22 @@ public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, Stat
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         //设置自定义值格式化轴值
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
         xAxis.setValueFormatter(new DayAxisValueFormatter(chart));
 
-//        YAxis left = chart.getAxisLeft();
+        YAxis left = chart.getAxisLeft();
 //        left.setDrawLabels(false); // no axis labels
 //        left.setDrawAxisLine(false); // no axis line
-//        left.setDrawGridLines(false); // no grid lines
-//        left.setDrawZeroLine(true); // draw a zero line
+        left.setDrawGridLines(true); // no grid lines
+        left.setDrawZeroLine(true); // draw a zero line
         chart.getAxisRight().setEnabled(false); // no right axis
+        chart.getDescription().setEnabled(false);
+
+        //点击的时候展示具体的坐标情况
+        chart.setOnChartValueSelectedListener(this);
+        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
+        mv.setChartView(chart); // For bounds control
+        chart.setMarker(mv); // Set the marker to the chart
     }
 
     private LineData generateLineData() {
@@ -207,21 +226,49 @@ public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, Stat
         List<BarEntry> entries = new ArrayList<>();
 
 
-        for (int i = 1; i < 13; i++) {
+        for (int i = 0; i < 12; i++) {
 //            entries.add(new BarEntry(i, statisticsData.getData().get(i).getCount()));
-            float val = (float) (Math.random() * (100 / 2f)) + 50;
+            int val = (int) (Math.random() * 100 + 50);
             entries.add(new BarEntry(i, val));
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
+        BarDataSet dataSet = new BarDataSet(entries, "访问量"); // add entries to dataset
         dataSet.setColor(R.color.red);
         dataSet.setValueTextColor(R.color.red);
         BarData barData = new BarData(dataSet);
-//        barData.setValueFormatter();//格式化数据值
+//        barData.setValueFormatter(XX);//格式化数据值
         chart.setData(barData);
         chart.invalidate();
+//        Description description = new Description();
+//        description.setText("条型统计图");
+//        chart.setDescription(description);
+    }
 
-        LogUtils.loge(statisticsData.getData().get(0).getType()+statisticsData.getData().get(0).getTypeId()+"===="+statisticsData.getData().get(0).getCount());
+
+    private final RectF onValueSelectedRectF = new RectF();
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if (e == null)
+            return;
+
+        RectF bounds = onValueSelectedRectF;
+        chart.getBarBounds((BarEntry) e, bounds);
+        MPPointF position = chart.getPosition(e, YAxis.AxisDependency.LEFT);
+
+        Log.i("bounds", bounds.toString());
+        Log.i("position", position.toString());
+
+        Log.i("x-index",
+                "low: " + chart.getLowestVisibleX() + ", high: "
+                        + chart.getHighestVisibleX());
+
+        MPPointF.recycleInstance(position);
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 
     @Override
@@ -238,4 +285,5 @@ public class StatisticsActivity extends BaseUIActivity<StatisticsPresenter, Stat
     public void showErrorTip(String msg) {
         ToastUtil.showShort(msg);
     }
+
 }
