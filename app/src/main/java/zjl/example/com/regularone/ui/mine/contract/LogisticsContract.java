@@ -16,13 +16,13 @@ import zjl.example.com.regularone.bean.LogisticsData;
  */
 public interface LogisticsContract {
     interface Model extends BaseModel {
-        Observable<LogisticsData> getLogisticsData();
+        Observable<LogisticsData> getLogisticsData(String company, String express_num);
     }
 
     interface View extends BaseView {
         void returnLogisticsData(LogisticsData logisticsData);
     }
     abstract class Presenter extends BasePresenter<View, Model> {
-        public abstract void getLogisticsDataRequest();
+        public abstract void getLogisticsDataRequest(String company, String express_num);
     }
 }

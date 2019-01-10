@@ -19,8 +19,8 @@ public class LogisticsData {
     private String ischeck;
     private String condition;
     private String com;
-    private String status;
-    private String state;
+    private int status;
+    private int state;
     private List<DataBean> data;
 
     public String getMessage() {
@@ -63,19 +63,19 @@ public class LogisticsData {
         this.com = com;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 

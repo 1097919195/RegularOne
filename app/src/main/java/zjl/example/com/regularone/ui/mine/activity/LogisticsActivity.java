@@ -9,9 +9,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.commonutils.KeyBordUtil;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 
@@ -19,12 +17,10 @@ import butterknife.BindView;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.BaseUIActivity;
 import zjl.example.com.regularone.bean.LogisticsData;
-import zjl.example.com.regularone.ui.activity.MainActivity;
 import zjl.example.com.regularone.ui.mine.adapter.LogisticsAdapter;
 import zjl.example.com.regularone.ui.mine.contract.LogisticsContract;
 import zjl.example.com.regularone.ui.mine.model.LogisticsModel;
 import zjl.example.com.regularone.ui.mine.presenter.LogisticsPresenter;
-import zjl.example.com.regularone.utils.MyUtils;
 
 public class LogisticsActivity extends BaseUIActivity<LogisticsPresenter, LogisticsModel> implements LogisticsContract.View {
 
@@ -34,6 +30,7 @@ public class LogisticsActivity extends BaseUIActivity<LogisticsPresenter, Logist
     Spinner company_type;
     @BindView(R.id.express_num)
     EditText express_num;
+    String company = "yunda";
 
     @Override
     public int getLayoutId() {
@@ -47,18 +44,21 @@ public class LogisticsActivity extends BaseUIActivity<LogisticsPresenter, Logist
 
     @Override
     public void initView() {
-        mPresenter.getLogisticsDataRequest();
+        mPresenter.getLogisticsDataRequest("yunda","3101775486667");//默认的测试单号
         initSpinner();
         initListener();
     }
 
     private void initListener() {
+        //回车键搜索监听
         express_num.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
                     KeyBordUtil.hideSoftKeyboard(express_num);
-                    mPresenter.getLogisticsDataRequest();
+                    if (express_num.getEditableText().length() > 0) {
+                        mPresenter.getLogisticsDataRequest(company,express_num.getText().toString());
+                    }
                     return true;
                 }
                 return false;
@@ -70,7 +70,8 @@ public class LogisticsActivity extends BaseUIActivity<LogisticsPresenter, Logist
         company_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//                String[] languages = getResources().getStringArray(R.array.company);
+                String[] companys = getResources().getStringArray(R.array.company_spell);
+                company = companys[pos];
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -81,15 +82,20 @@ public class LogisticsActivity extends BaseUIActivity<LogisticsPresenter, Logist
 
     @Override
     public void returnLogisticsData(LogisticsData logisticsData) {
-        if (logisticsData.getData().size()>0) {
-            ToastUtil.showShort("测试单号");
-            LogisticsAdapter adapter = new LogisticsAdapter(mContext, logisticsData.getData(), R.layout.item_logistics);
-            timelineRV.setAdapter(adapter);
-            timelineRV.setLayoutManager(new LinearLayoutManager(this));
-            adapter.openLoadAnimation(false);
+        if (logisticsData.getStatus() == 200) {
+            if (logisticsData.getData().size()>0) {
+                ToastUtil.showShort("查询成功");
+                LogisticsAdapter adapter = new LogisticsAdapter(mContext, logisticsData.getData(), R.layout.item_logistics);
+                timelineRV.setAdapter(adapter);
+                timelineRV.setLayoutManager(new LinearLayoutManager(this));
+                adapter.openLoadAnimation(false);
+            }else {
+                ToastUtil.showShort("暂无数据");
+            }
         }else {
-            ToastUtil.showShort("测试单号查询失败");
+            ToastUtil.showShort(logisticsData.getMessage());
         }
+
 
     }
 

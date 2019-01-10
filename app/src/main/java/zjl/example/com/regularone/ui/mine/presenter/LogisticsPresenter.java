@@ -12,8 +12,8 @@ import zjl.example.com.regularone.ui.mine.contract.LogisticsContract;
 public class LogisticsPresenter extends LogisticsContract.Presenter {
 
     @Override
-    public void getLogisticsDataRequest() {
-        mRxManage.add(mModel.getLogisticsData().subscribeWith(new RxSubscriber2<LogisticsData>(mContext, true) {
+    public void getLogisticsDataRequest(String company, String express_num) {
+        mRxManage.add(mModel.getLogisticsData(company,express_num).subscribeWith(new RxSubscriber2<LogisticsData>(mContext, true) {
             @Override
             protected void _onNext(LogisticsData logisticsData) {
                 mView.returnLogisticsData(logisticsData);

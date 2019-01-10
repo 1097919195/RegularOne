@@ -31,5 +31,12 @@
         <item>申通</item>
         <item>中通</item>
     </string-array>
+    <string-array name="company_spell">
+        <item>yunda</item>
+        <item>sunfeng</item>
+        <item>yuantong</item>
+        <item>shentong</item>
+        <item>zhongtong</item>
+    </string-array>
 
 </resources>

@@ -15,9 +15,10 @@ import zjl.example.com.regularone.ui.mine.contract.LogisticsContract;
 public class LogisticsModel implements LogisticsContract.Model {
 
     @Override
-    public Observable<LogisticsData> getLogisticsData() {
+    public Observable<LogisticsData> getLogisticsData(String company, String express_num) {
         return Api.getDefault(HostType.PHOTO_HOST)
-                .getLogistics("http://www.kuaidi100.com/query?type=yunda&postid=3101775486667")
+//                .getLogistics("http://www.kuaidi100.com/query?type=yunda&postid=3101775486667")
+                .getLogistics("http://www.kuaidi100.com/query?type=" + company + "&postid=" + express_num)
                 .compose(RxSchedulers.io_main());
     }
 }
