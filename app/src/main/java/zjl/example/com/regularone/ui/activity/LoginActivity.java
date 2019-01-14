@@ -28,6 +28,7 @@ public class LoginActivity extends BaseActivity {
     TextInputEditText password_input;
 
     private EditTextInputHelper mEditTextInputHelper;
+
     @Override
     public int getLayoutId() {
         return R.layout.act_login;
