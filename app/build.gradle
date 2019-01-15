@@ -112,4 +112,7 @@ dependencies {
     compile 'com.github.jaychou2012:SwitchLayout:1.0.0.0'//界面跳转动画
     implementation 'com.github.vipulasri:timelineview:1.1.0'//时间轴
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'//统计图
+    implementation 'com.github.moyokoo:Diooto:1.18'//微信微博图库效果
+    implementation 'me.panpf:sketch-gif:2.7.0-beta1'
+    implementation 'me.panpf:sketch:2.7.0-beta1'
 }

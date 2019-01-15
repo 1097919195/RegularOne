@@ -18,6 +18,11 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.footer.LoadingView;
 import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout;
 
+import net.moyokoo.diooto.Diooto;
+import net.moyokoo.diooto.config.DiootoConfig;
+import net.moyokoo.diooto.interfaces.CircleIndexIndicator;
+import net.moyokoo.diooto.interfaces.DefaultCircleProgress;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +153,28 @@ public class NewsFragment extends BaseFragmentLazy<PhotosListPresenter, PhotosLi
                     @Override
                     public void onClick(View view) {
                         PhotosDetailActivity.startAction(getActivity(),item.getUrl(), image);
+                        //这个库使用好像是有问题的(优化好了再说吧)
+//                        List<String> photos = new ArrayList<>();
+//                        for (int i = 0; i < photoGirlList.size(); i++) {
+//                            photos.add(photoGirlList.get(i).getUrl());
+//                        }
+//                        String[] strings = photos.toArray(new String[photos.size()]);
+//
+//                        Diooto diooto = new Diooto(getActivity())
+//                                .urls(item.getUrl())
+//                                //图片或者视频
+//                                .type(DiootoConfig.PHOTO)
+//                                //点击的位置 如果你的RecyclerView有头部View  则使用 .position(holder.getAdapterPosition(),headSize) headSize为头部布局数量
+//                                .position(helper.getAdapterPosition())
+//                                //可以传recylcerview自动识别(需要传在item布局中的viewId)  也可以手动传view数组
+//                                .views(recyclerView,R.id.ivGirlImage)
+//                                //设置选择器 默认CircleIndexIndicator  可实现IIndicator接口自定义
+//                                .setIndicator(new CircleIndexIndicator())
+//                                //设置进度条样式  默认DefaultProgress 可实现IProgress接口自定义
+//                                .setProgress(new DefaultCircleProgress())
+//                                //在显示原图之前显示的图片  如果你列表使用Glide加载  这里也使用Glide加载
+//                                .loadPhotoBeforeShowBigImage((sketchImageView, position12) -> sketchImageView.displayImage(strings[helper.getAdapterPosition()]))
+//                                .start();
                     }
                 });
             }
