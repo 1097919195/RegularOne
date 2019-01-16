@@ -7,12 +7,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaydenxiao.common.base.BaseFragment;
+import com.tencent.connect.UserInfo;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.UiError;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.ui.activity.LoginActivity;
+import zjl.example.com.regularone.ui.activity.MainActivity;
 import zjl.example.com.regularone.ui.mine.activity.LogisticsActivity;
 import zjl.example.com.regularone.ui.mine.activity.StatisticsActivity;
+import zjl.example.com.regularone.utils.BaseUIListener;
+import zjl.example.com.regularone.utils.Util;
 
 /**
  * Created by Administrator on 2018/11/8 0008.
@@ -34,6 +42,7 @@ public class MineFragment extends BaseFragment {
     TextView statistics_tv;
 
     Typeface typeface;
+    String rmsg;
     @Override
     protected int getLayoutResource() {
         return R.layout.frag_mine;
@@ -68,5 +77,30 @@ public class MineFragment extends BaseFragment {
             Intent intent = new Intent(getActivity(), StatisticsActivity.class);
             startActivity(intent);
         });
+    }
+
+    //QQ登录后调用方法更新信息
+    public void updataUserInfo() {
+        if (LoginActivity.ready(getActivity())) {
+            LoginActivity.mInfo.getUserInfo(new IUiListener() {
+                @Override
+                public void onComplete(Object o) {
+                    if (o != null) {
+                        JSONObject response = (JSONObject)o;
+                        rmsg = response.toString().replace(",", "\n");
+                    }
+                }
+
+                @Override
+                public void onError(UiError uiError) {
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+        }
     }
 }

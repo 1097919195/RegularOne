@@ -115,4 +115,5 @@ dependencies {
     implementation 'com.github.moyokoo:Diooto:1.18'//微信微博图库效果
     implementation 'me.panpf:sketch-gif:2.7.0-beta1'
     implementation 'me.panpf:sketch:2.7.0-beta1'
+    implementation files('libs/open_sdk_r6019_lite.jar')//QQ第三方登陆
 }
