@@ -122,7 +122,8 @@ public class MineFragment extends BaseFragment {
                         JSONObject response = (JSONObject)o;
                         rmsg = response.toString();//这里获取到的URL是转义字符，直接使用的话需要 .replaceAll("\\\\","")
                         LogUtils.loge(response.toString());
-                        info_qq=new Gson().fromJson(rmsg, new TypeToken<UserInfo_QQ>() {}.getType());//json转化成实体类，可参考发报项目中的JSONArray转化为实体
+//                        info_qq=new Gson().fromJson(rmsg, new TypeToken<UserInfo_QQ>() {}.getType());//json转化成实体类，可参考发报项目中的JSONArray转化为实体（可用于泛型信息）
+                        info_qq = new Gson().fromJson(rmsg, UserInfo_QQ.class);//直接转化
                         LogUtils.loge(new Gson().toJson(info_qq));
                         Glide.with(getActivity())
                                 .load(info_qq.getFigureurl_2())//这里获取到的URL有转义字符
