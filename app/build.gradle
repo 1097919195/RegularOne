@@ -5,15 +5,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'demo'
+            keyPassword '123456'
+            storeFile file('D:/StudioSigned/RegularOne.jks')
+            storePassword '123456'
+        }
+    }
     configurations.all {
         resolutionStrategy {
             force 'com.android.support:support-annotations:27.1.1'
         }
     }
-
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
-
     compileSdkVersion 26
     defaultConfig {
         applicationId "zjl.example.com.regularone"
@@ -36,21 +42,27 @@ android {
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         //这里修改apk文件名
                         def fileName = "RegularOne-${defaultConfig.versionName}.apk"
-                        output.outputFileName  = fileName//studio3.0中要这么写
+                        output.outputFileName = fileName//studio3.0中要这么写
 //                        output.outputFile = new File(outputFile.parent, fileName) //studio2.3
                     }
                 }
             }
+            signingConfig signingConfigs.debug
         }
-        debug{//调试
+        debug {//调试
             buildConfigField "boolean", "LOG_DEBUG", "true"
+            signingConfig signingConfigs.debug
         }
     }
-
     //lambda
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+        exclude 'META-INF/LICENSE' // will not include LICENSE file
     }
 }
 
@@ -76,7 +88,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':library:common')
-
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.qianwen:update-app:3.5.2'
@@ -116,4 +127,7 @@ dependencies {
     implementation 'me.panpf:sketch-gif:2.7.0-beta1'
     implementation 'me.panpf:sketch:2.7.0-beta1'
     implementation files('libs/open_sdk_r6019_lite.jar')//QQ第三方登陆
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr3'//jackson https://blog.csdn.net/sinat_31057219/article/details/71516053
+    compile 'com.fasterxml.jackson.core:jackson-core:2.9.0.pr3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0.pr3'
 }
