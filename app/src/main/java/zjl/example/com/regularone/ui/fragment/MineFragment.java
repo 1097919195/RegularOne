@@ -1,42 +1,27 @@
 package zjl.example.com.regularone.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.jaydenxiao.common.base.BaseFragment;
 import com.jaydenxiao.common.commonutils.LogUtils;
-import com.tencent.connect.UserInfo;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.bean.thirdPartyBean.UserInfo_QQ;
 import zjl.example.com.regularone.ui.activity.LoginActivity;
-import zjl.example.com.regularone.ui.activity.MainActivity;
 import zjl.example.com.regularone.ui.mine.activity.LogisticsActivity;
 import zjl.example.com.regularone.ui.mine.activity.StatisticsActivity;
-import zjl.example.com.regularone.utils.BaseUIListener;
-import zjl.example.com.regularone.utils.Util;
 
 /**
  * Created by Administrator on 2018/11/8 0008.
