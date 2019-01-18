@@ -127,7 +127,7 @@ dependencies {
     implementation 'me.panpf:sketch-gif:2.7.0-beta1'
     implementation 'me.panpf:sketch:2.7.0-beta1'
     implementation files('libs/open_sdk_r6019_lite.jar')//QQ第三方登陆
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr3'//jackson https://blog.csdn.net/sinat_31057219/article/details/71516053
-    compile 'com.fasterxml.jackson.core:jackson-core:2.9.0.pr3'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0.pr3'
+//    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr3'//jackson https://blog.csdn.net/sinat_31057219/article/details/71516053
+//    compile 'com.fasterxml.jackson.core:jackson-core:2.9.0.pr3'
+//    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0.pr3'
 }
