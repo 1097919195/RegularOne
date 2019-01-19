@@ -34,6 +34,7 @@ android {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled false
+//            shrinkResources true //资源压缩(好像只有minifyEnabled为true的时候才可以使用，不然build失败) --代码混淆方案 https://www.jianshu.com/p/e9d3c57ab92f?utm_campaign=haruki&utm_content=note&utm_medium=reader_share&utm_source=qq
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //apk命名
             android.applicationVariants.all { variant ->
