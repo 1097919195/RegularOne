@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity {
 //        sign_in_button.setClickable(false);
         mEditTextInputHelper = new EditTextInputHelper(sign_in_button, false);
         mEditTextInputHelper.addViews(username_input, password_input);
-        mTencent = Tencent.createInstance("101541509", this);
+        mTencent = Tencent.createInstance("101543687", this);
         initListener();
     }
 
