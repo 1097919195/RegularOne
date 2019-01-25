@@ -32,7 +32,7 @@ public class RxBus2 {
     private final Subject<Object> mSubject;
 
     @SuppressWarnings("rawtypes")
-    private ConcurrentHashMap<Object, List<Subject>> subjectMapper = new ConcurrentHashMap<Object, List<Subject>>();
+    private ConcurrentHashMap<Object, List<Subject>> subjectMapper = new ConcurrentHashMap<Object, List<Subject>>(); //http://www.importnew.com/26049.html
 
     //单列模式
     public static RxBus2 getInstance() {
