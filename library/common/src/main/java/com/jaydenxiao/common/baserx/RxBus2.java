@@ -1,6 +1,7 @@
 package com.jaydenxiao.common.baserx;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.jaydenxiao.common.commonutils.LogUtils;
 
@@ -23,8 +24,8 @@ import io.reactivex.subjects.Subject;
 
 /**
  * Created by Administrator on 2018/4/12 0012.
+ * https://blog.csdn.net/zcpHappy/article/details/75255918
  */
-
 
 public class RxBus2 {
     private HashMap<String, CompositeDisposable> mSubscriptionMap;
@@ -99,6 +100,17 @@ public class RxBus2 {
         subjectList.add(subject = PublishSubject.create());
         LogUtils.logd("register"+tag + "  size:" + subjectList.size());
         return subject;
+    }
+
+    //注册 (这也是一种注册方式，RxBus自己单独管理，有空可以优化下)
+    public <T> void registerRxBus(Class<T> eventType, Consumer<T> action) {
+        Disposable disposable = mRxBus.doSubscribe(eventType, action, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                Log.e("NewsMainPresenter", throwable.toString());
+            }
+        });
+        mRxBus.addSubscription(this,disposable);
     }
 
     /**
