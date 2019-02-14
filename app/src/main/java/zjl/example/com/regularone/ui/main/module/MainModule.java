@@ -12,7 +12,7 @@ public class MainModule implements MainContract.Model {
     @Override
     public Observable<WeatherInfo> getWeatherInfo() {
         return Api.getDefault(HostType.WEATHER_HOST)
-                .getWeather("w3ghwrnxngne3zfa","shaoxing")
+                .getWeather("w3ghwrnxngne3zfa","hangzhou")
                 .compose(RxSchedulers.io_main());
     }
 }
