@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#00000000">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_alignParentRight="true"
+        android:id="@+id/right_photo"
+        android:layout_marginRight="9dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/right_photo"
+        android:gravity="center"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginRight="5dp"
+        android:text="王子异"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/name"
+        android:gravity="center"
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:text="2018-08-09"
+        android:textColor="#9A8FF5"/>
+
+</RelativeLayout>

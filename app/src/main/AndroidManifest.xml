@@ -80,6 +80,9 @@
         <activity android:name=".ui.mine.activity.StatisticsActivity"
             android:screenOrientation="nosensor"/>
 
+        <activity android:name=".ui.activity.test.TestActivity"
+            android:screenOrientation="nosensor"/>
+
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:noHistory="true"

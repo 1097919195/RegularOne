@@ -4,7 +4,6 @@ package zjl.example.com.regularone.api;
 import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -17,6 +16,7 @@ import zjl.example.com.regularone.bean.NavCategory;
 import zjl.example.com.regularone.bean.StatisticsData;
 import zjl.example.com.regularone.bean.VideoData;
 import zjl.example.com.regularone.bean.WeatherInfo;
+import zjl.example.com.regularone.ui.activity.test.DataBean;
 
 /**
  * des:ApiService
@@ -219,4 +219,9 @@ public interface ApiService {
 //    );
 
 
+    //测试
+    @GET()
+    Observable<DataBean> getDataInfo(
+//            @Header("Cache-Control") String cacheControl,
+            @Url String path);
 }

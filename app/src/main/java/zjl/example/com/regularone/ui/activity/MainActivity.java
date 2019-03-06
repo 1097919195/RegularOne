@@ -1,11 +1,9 @@
 package zjl.example.com.regularone.ui.activity;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -21,7 +19,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +38,6 @@ import com.jaydenxiao.common.commonutils.ACache;
 import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
-import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
@@ -65,6 +61,7 @@ import zjl.example.com.regularone.R;
 import zjl.example.com.regularone.app.AppApplication;
 import zjl.example.com.regularone.app.AppConstant;
 import zjl.example.com.regularone.bean.WeatherInfo;
+import zjl.example.com.regularone.ui.activity.test.TestActivity;
 import zjl.example.com.regularone.ui.fragment.AboutFragment;
 import zjl.example.com.regularone.ui.fragment.MineFragment;
 import zjl.example.com.regularone.ui.fragment.NewsMainFragment;
@@ -74,7 +71,6 @@ import zjl.example.com.regularone.ui.fragment.VideoFragment;
 import zjl.example.com.regularone.ui.main.contract.MainContract;
 import zjl.example.com.regularone.ui.main.module.MainModule;
 import zjl.example.com.regularone.ui.main.presenter.MainPresenter;
-import zjl.example.com.regularone.utils.FileUtils;
 import zjl.example.com.regularone.utils.TipsToast;
 import zjl.example.com.regularone.widget.BottomNavigationViewEx;
 
@@ -186,7 +182,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
 //        navigationView.setCheckedItem(R.id.nav_menu_picture);//设置菜单默认选中项(暂时取消了选中的功能)
         initPersonPhoto();
         initListener();
-//        initHighLight();//第一次的高亮引导
+        initHighLight();//第一次的高亮引导
         initBottomNavigation();
         initRxBusListener();
     }
@@ -295,7 +291,7 @@ public class MainActivity extends BaseActivity<MainPresenter,MainModule> impleme
                 startActivity(intent);
                 break;
             case R.id.nav_menu_station://这块内容到时候也可以切换为图标
-                Intent media = new Intent(this, MediaActivity.class);
+                Intent media = new Intent(this, TestActivity.class);
                 startActivity(media);
                 break;
             case R.id.nav_menu_favorite:
